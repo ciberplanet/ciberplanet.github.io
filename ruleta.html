@@ -96,7 +96,7 @@
         }
 
         .nav-logo img {
-            height: 80px;
+            height: 70px;
             filter: drop-shadow(0 0 10px var(--neon-cyan));
         }
 
@@ -481,6 +481,10 @@
             text-align: center;
         }
 
+        .WaReclamar{
+            color:rgb(0, 255, 0);
+        }
+
         .instructions ol {
             color: var(--text-secondary);
             padding-left: 1.5rem;
@@ -499,6 +503,152 @@
         .instructions .date {
             color: var(--neon-yellow);
             font-weight: 700;
+        }
+
+        /* Sección de Premios */
+        .prizes-section {
+            width: 100%;
+            max-width: 1000px;
+            margin-top: 3rem;
+            padding: 2rem 0;
+        }
+
+        .prizes-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(1.3rem, 3vw, 2rem);
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--neon-gold), var(--neon-yellow), var(--neon-gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .prizes-subtitle {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.5rem;
+            color: var(--neon-cyan);
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .prizes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            padding: 0 1rem;
+        }
+
+        .prize-card {
+            background: var(--card-bg);
+            border: 2px solid var(--neon-cyan);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .prize-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 245, 255, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .prize-card:hover::before {
+            left: 100%;
+        }
+
+        .prize-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 245, 255, 0.3);
+            border-color: var(--neon-magenta);
+        }
+
+        .prize-icon {
+            font-size: 2.5rem;
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        .prize-card h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.95rem;
+            color: var(--neon-cyan);
+            margin-bottom: 0.5rem;
+        }
+
+        .prize-card p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        /* Jackpot Card */
+        .prize-card.jackpot-card {
+            border-color: var(--neon-gold);
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 183, 0, 0.05));
+            animation: jackpotCardGlow 2s ease-in-out infinite;
+        }
+
+        .prize-card.jackpot-card h3 {
+            color: var(--neon-gold);
+        }
+
+        .prize-card.jackpot-card:hover {
+            box-shadow: 0 10px 40px rgba(255, 215, 0, 0.4);
+            border-color: var(--neon-gold);
+        }
+
+        @keyframes jackpotCardGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.2); }
+            50% { box-shadow: 0 0 40px rgba(255, 215, 0, 0.4), 0 0 60px rgba(255, 215, 0, 0.2); }
+        }
+
+        .jackpot-badge {
+            position: absolute;
+            top: 10px;
+            right: -30px;
+            background: linear-gradient(135deg, var(--neon-gold), #ffb700);
+            color: #000;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.6rem;
+            font-weight: 700;
+            padding: 0.3rem 2rem;
+            transform: rotate(45deg);
+        }
+
+        /* Mystery Card */
+        .prize-card.mystery-card {
+            border-color: var(--neon-magenta);
+            background: linear-gradient(135deg, rgba(236, 72, 153, 0.1), rgba(191, 0, 255, 0.05));
+        }
+
+        .prize-card.mystery-card h3 {
+            color: var(--neon-magenta);
+        }
+
+        .prize-card.mystery-card:hover {
+            box-shadow: 0 10px 40px rgba(236, 72, 153, 0.4);
+            border-color: var(--neon-magenta);
+        }
+
+        .mystery-badge {
+            display: inline-block;
+            margin-top: 0.5rem;
+            background: linear-gradient(135deg, var(--neon-magenta), var(--neon-purple));
+            color: #fff;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.6rem;
+            font-weight: 700;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
         }
 
         /* Modal */
@@ -693,6 +843,11 @@
             .wheel-label:nth-child(8) { transform: translate(-50%, -50%) rotate(337.5deg) translateY(-100px) rotate(-337.5deg); }
             .wheel-center { width: 50px; height: 50px; font-size: 1.3rem; }
             .wheel { animation: none; }
+            .prizes-grid { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; }
+            .prize-card { padding: 1rem; }
+            .prize-icon { font-size: 2rem; }
+            .prize-card h3 { font-size: 0.85rem; }
+            .prize-card p { font-size: 0.75rem; }
         }
     </style>
 </head>
@@ -755,10 +910,60 @@
             <ol>
                 <li>Presiona el botón <strong>"¡GIRAR RULETA!"</strong> para obtener tu premio</li>
                 <li>Cuando ganes, <strong>toma una captura de pantalla (screenshot)</strong> de tu premio</li>
-                <li>Envía tu captura por WhatsApp al número: <span class="phone"><a href="https://wa.me/524471070706">4471070706</a></span></li>
+                <li>Envía tu captura por WhatsApp al número: <span class="phone"><a href="https://wa.me/524471070706" class="WaReclamar">4471070706</a></span></li>
                 <li>Presenta tu captura en el ciber para hacer válido tu premio</li>
                 <li>Tu premio es válido hasta el: <span class="date">09 de Enero de 2025</span></li>
             </ol>
+        </div>
+
+        <!-- Sección de Premios -->
+        <div class="prizes-section">
+            <h2 class="prizes-title">🎁 PREMIOS DISPONIBLES 🎁</h2>
+            <p class="prizes-subtitle">// LO QUE PUEDES GANAR //</p>
+            <div class="prizes-grid">
+                <div class="prize-card">
+                    <span class="prize-icon">📄</span>
+                    <h3>10% en Trámites</h3>
+                    <p>Descuento en todos nuestros servicios de trámites y gestiones.</p>
+                </div>
+                <div class="prize-card">
+                    <span class="prize-icon">📜</span>
+                    <h3>20% Actas de Nacimiento</h3>
+                    <p>Descuento especial en trámites de actas de nacimiento.</p>
+                </div>
+                <div class="prize-card">
+                    <span class="prize-icon">🖥️</span>
+                    <h3>2 Horas Gratis PC</h3>
+                    <p>Disfruta 2 horas completamente gratis en nuestras computadoras.</p>
+                </div>
+                <div class="prize-card">
+                    <span class="prize-icon">💻</span>
+                    <h3>10% Rep. Computadoras</h3>
+                    <p>Descuento en reparación y mantenimiento de computadoras.</p>
+                </div>
+                <div class="prize-card">
+                    <span class="prize-icon">📱</span>
+                    <h3>5% Rep. Celulares</h3>
+                    <p>Descuento en reparación de celulares y tablets.</p>
+                </div>
+                <div class="prize-card">
+                    <span class="prize-icon">💾</span>
+                    <h3>20% Inst. Programas</h3>
+                    <p>Descuento en instalación de programas y software.</p>
+                </div>
+                <div class="prize-card jackpot-card">
+                    <span class="prize-icon">🏆</span>
+                    <h3>50% Actas de Nacimiento</h3>
+                    <p>¡PREMIO MAYOR! Súper descuento en actas de nacimiento.</p>
+                    <span class="jackpot-badge">JACKPOT</span>
+                </div>
+                <div class="prize-card mystery-card">
+                    <span class="prize-icon">🎁</span>
+                    <h3>Regalo Sorpresa</h3>
+                    <p>¡Premio misterioso! Pasa al ciber para descubrir tu sorpresa.</p>
+                    <span class="mystery-badge">🥳 SORPRESA</span>
+                </div>
+            </div>
         </div>
     </div>
 
