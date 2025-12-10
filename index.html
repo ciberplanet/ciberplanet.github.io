@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ciber Planet | Centro de Gaming & Internet</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <img src="firma-ciber.png" alt="Ciber Planet" style="width: 300px; filter: drop-shadow(0 0 30px rgba(0, 245, 255, 0.5));">
+        <div class="loading-bar">
+            <div class="loading-progress"></div>
+        </div>
+        <p class="loading-text">INICIANDO SISTEMA...</p>
+    </div>
+
+    <!-- Background Effects -->
+    <div class="bg-animation"></div>
+    <div class="stars" id="stars"></div>
+    <canvas class="matrix-bg" id="matrix"></canvas>
+    <div class="grid-overlay"></div>
+    <div class="pixel-container" id="pixelContainer"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-logo">
+            <img src="firma-ciber.png" alt="Ciber Planet Logo">
+        </div>
+        <ul class="nav-links">
+            <li><a href="#inicio">Inicio</a></li>
+            <li><a href="#servicios">Servicios</a></li>
+            <li><a href="#promociones">Promociones</a></li>
+            <li><a href="#opiniones">Opiniones</a></li>
+            <li><a href="#contacto">Contacto</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="inicio">
+        <img src="firma-ciber.png" alt="Ciber Planet" class="hero-logo">
+        <h1 class="glitch" data-text="CIBER PLANET"><span class="cyber">CIBER</span> <span class="planet">PLANET</span></h1>
+        <p class="hero-tagline">>> TU PORTAL AL MUNDO DIGITAL <<</p>
+        <div class="hero-buttons">
+            <a href="#promociones" class="btn btn-primary">VER PROMOCIONES</a>
+            <a href="#contacto" class="btn btn-secondary">UBICACIÓN</a>
+        </div>
+        <a href="ruleta.html" class="btn-gift">
+            <span class="gift-icon">🎁</span>
+            <span class="gift-text">OBTENER MI REGALO</span>
+            <span class="gift-sparkle">✨</span>
+        </a>
+        <div class="scroll-indicator">
+            <span>SCROLL</span>
+            <div class="scroll-arrow"></div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services" id="servicios">
+        <h2 class="section-title">SERVICIOS</h2>
+        <p class="section-subtitle">// LO QUE OFRECEMOS //</p>
+        <div class="services-grid">
+            <div class="service-card reveal">
+                <span class="service-icon">🎮</span>
+                <h3>Gaming Zone</h3>
+                <p>PCs de alto rendimiento con las últimas GPUs para gaming competitivo y casual. Juega tus títulos favoritos sin lag.</p>
+            </div>
+            <div class="service-card reveal">
+                <span class="service-icon">🌐</span>
+                <h3>Internet de Alta Velocidad</h3>
+                <p>Conexión de fibra óptica ultra rápida para navegación, streaming y descargas sin interrupciones.</p>
+            </div>
+            <div class="service-card reveal">
+                <span class="service-icon">🖨️</span>
+                <h3>Impresiones & Copias</h3>
+                <p>Servicio de impresión a color y B/N, copias, escaneos y encuadernados. Todo lo que necesitas.</p>
+            </div>
+            <div class="service-card reveal">
+                <span class="service-icon">📱</span>
+                <h3>Recargas & Pagos</h3>
+                <p>Recargas telefónicas de todas las compañías. Rápido y seguro.</p>
+            </div>
+            <div class="service-card reveal">
+                <span class="service-icon">💾</span>
+                <h3>Papelería Digital</h3>
+                <p>Trabajos escolares, currículums, formatos oficiales. Te ayudamos con tus documentos.</p>
+            </div>
+            <div class="service-card reveal">
+                <span class="service-icon">📲</span>
+                <h3>Reparación de Celulares</h3>
+                <p>Reparamos pantallas, baterías, puertos de carga y más. Tu celular como nuevo en poco tiempo.</p>
+            </div>
+            <div class="service-card reveal">
+                <span class="service-icon">💻</span>
+                <h3>Reparación de Computadoras</h3>
+                <p>Mantenimiento, formateos, limpieza de virus, actualizaciones y reparación de hardware. Soluciones rápidas.</p>
+            </div>
+            <div class="service-card reveal">
+                <span class="service-icon">🎨</span>
+                <h3>Diseño Gráfico & Web</h3>
+                <p>Creación de logos, tarjetas de presentación, páginas de Facebook, imágenes promocionales y diseño de páginas web.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="stats-container">
+            <div class="stat-item reveal">
+                <div class="stat-number" data-target="5">0</div>
+                <p class="stat-label">AÑOS DE EXPERIENCIA</p>
+            </div>
+            <div class="stat-item reveal">
+                <div class="stat-number" data-target="1000">0</div>
+                <p class="stat-label">CLIENTES FELICES</p>
+            </div>
+            <div class="stat-item reveal">
+                <div class="stat-number" data-target="500">0</div>
+                <p class="stat-label">REPARACIONES</p>
+            </div>
+            <div class="stat-item reveal">
+                <div class="stat-number" data-target="100">0</div>
+                <p class="stat-label">DISEÑOS CREADOS</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Promotions Section -->
+    <section class="prices" id="promociones">
+        <h2 class="section-title">PROMOCIONES</h2>
+        <p class="section-subtitle">// LAS MEJORES PROMOCIONES A TU ALCANCE //</p>
+        <div class="prices-grid">
+            <div class="price-card reveal">
+                <h3>🔥 DESCUENTOS</h3>
+                <div class="price-amount" style="font-size: 2rem;">HASTA 30%</div>
+                <p class="price-duration">EN TRÁMITES</p>
+                <ul class="price-features">
+                    <li>Descuentos en impresiones por volumen</li>
+                    <li>Promociones en reparaciones</li>
+                    <li>Paquetes especiales para estudiantes</li>
+                    <li>Precios especiales para empresas</li>
+                </ul>
+                <a href="#contacto" class="btn btn-secondary">PREGUNTAR</a>
+            </div>
+            <div class="price-card featured reveal">
+                <div class="popular-badge">⭐ DESTACADO ⭐</div>
+                <h3>⭐ PROMO DEL MES</h3>
+                <div class="price-amount" style="font-size: 2rem;">OFERTAS</div>
+                <p class="price-duration">ESPECIALES</p>
+                <ul class="price-features">
+                    <li>Renovamos promociones cada mes</li>
+                    <li>Descuentos en diseño gráfico</li>
+                    <li>Paquetes de horas de internet</li>
+                    <li>Combos de impresión + engargolado</li>
+                    <li>¡Síguenos en Facebook!</li>
+                </ul>
+                <a href="https://www.facebook.com/profile.php?id=61581123667975" class="btn btn-primary" target="_blank">VER EN FACEBOOK</a>
+            </div>
+            <div class="price-card reveal">
+                <h3>🎁 CLIENTES FRECUENTES</h3>
+                <div class="price-amount" style="font-size: 2rem;">BENEFICIOS</div>
+                <p class="price-duration">EXCLUSIVOS</p>
+                <ul class="price-features">
+                    <li>Acumula puntos por cada visita</li>
+                    <li>Descuentos especiales</li>
+                    <li>Prioridad en reparaciones</li>
+                    <li>Promociones exclusivas</li>
+                </ul>
+                <a href="#contacto" class="btn btn-secondary">ÚNETE</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reviews Section -->
+    <section class="gaming-zone" id="opiniones">
+        <h2 class="section-title">OPINIONES</h2>
+        <p class="section-subtitle">// LO QUE DICEN NUESTROS CLIENTES //</p>
+        
+        <!-- Rating Overview - FIXED -->
+        <div class="rating-overview">
+            <div class="rating-stars">
+                <span class="rating-star full">★</span>
+                <span class="rating-star full">★</span>
+                <span class="rating-star full">★</span>
+                <span class="rating-star full">★</span>
+                <span class="rating-star half">★</span>
+            </div>
+            <div class="rating-score">4.5</div>
+            <p class="rating-text">Calificación promedio basada en nuestros clientes</p>
+        </div>
+
+        <div class="reviews-container">
+            <div class="review-card reveal">
+                <div class="review-header">
+                    <div class="review-avatar">👤</div>
+                    <div class="review-info">
+                        <h4>María García</h4>
+                        <span class="review-stars">★★★★★</span>
+                    </div>
+                </div>
+                <p class="review-text">"Excelente servicio, el internet es súper rápido y el personal muy amable. Siempre vengo a hacer mis impresiones aquí. ¡100% recomendado!"</p>
+            </div>
+
+            <div class="review-card reveal">
+                <div class="review-header">
+                    <div class="review-avatar">👤</div>
+                    <div class="review-info">
+                        <h4>Carlos Hernández</h4>
+                        <span class="review-stars">★★★★★</span>
+                    </div>
+                </div>
+                <p class="review-text">"Me repararon mi celular en tiempo récord y a muy buen precio. El trato fue muy profesional y amable. Definitivamente regresaré."</p>
+            </div>
+
+            <div class="review-card reveal">
+                <div class="review-header">
+                    <div class="review-avatar">👤</div>
+                    <div class="review-info">
+                        <h4>Ana Martínez</h4>
+                        <span class="review-stars">★★★★★</span>
+                    </div>
+                </div>
+                <p class="review-text">"El mejor ciber de la zona. Internet veloz, buen ambiente y precios accesibles. El servicio al cliente es de primera."</p>
+            </div>
+
+            <div class="review-card reveal">
+                <div class="review-header">
+                    <div class="review-avatar">👤</div>
+                    <div class="review-info">
+                        <h4>Roberto López</h4>
+                        <span class="review-stars">★★★★☆</span>
+                    </div>
+                </div>
+                <p class="review-text">"Muy buen lugar para trabajar y estudiar. El internet nunca falla y siempre hay computadoras disponibles. El personal muy atento."</p>
+            </div>
+
+            <div class="review-card reveal">
+                <div class="review-header">
+                    <div class="review-avatar">👤</div>
+                    <div class="review-info">
+                        <h4>Laura Sánchez</h4>
+                        <span class="review-stars">★★★★★</span>
+                    </div>
+                </div>
+                <p class="review-text">"Me hicieron un logo increíble para mi negocio. Muy creativos y el precio muy justo. ¡Súper recomendados para diseño!"</p>
+            </div>
+
+            <div class="review-card reveal">
+                <div class="review-header">
+                    <div class="review-avatar">👤</div>
+                    <div class="review-info">
+                        <h4>Miguel Ángel</h4>
+                        <span class="review-stars">★★★★★</span>
+                    </div>
+                </div>
+                <p class="review-text">"Llevo años viniendo aquí. Siempre con promociones buenas y el servicio cada vez mejor. El equipo es muy profesional y amigable."</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contacto">
+        <h2 class="section-title">CONTACTO</h2>
+        <p class="section-subtitle">// VISÍTANOS //</p>
+        <div style="max-width: 600px; margin: 0 auto;">
+            <div class="contact-info">
+                <a href="https://maps.app.goo.gl/TkMbacxHM3ZoYvf79" target="_blank" class="contact-item" style="text-decoration: none;">
+                    <span class="contact-item-icon">📍</span>
+                    <div class="contact-item-text">
+                        <h4>UBICACIÓN</h4>
+                        <p>Ver en Google Maps</p>
+                    </div>
+                </a>
+                <a href="https://wa.me/524471070706" target="_blank" class="contact-item" style="text-decoration: none;">
+                    <span class="contact-item-icon">📱</span>
+                    <div class="contact-item-text">
+                        <h4>WHATSAPP</h4>
+                        <p>447 107 0706</p>
+                    </div>
+                </a>
+                <div class="contact-item">
+                    <span class="contact-item-icon">🕐</span>
+                    <div class="contact-item-text">
+                        <h4>HORARIO</h4>
+                        <p>Lunes a Viernes: 9:00 AM - 5:00 PM</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <img src="firma-ciber.png" alt="Ciber Planet" class="footer-logo">
+        <p class="footer-text">
+            © 2024 <span>CIBER PLANET</span> - TODOS LOS DERECHOS RESERVADOS<br>
+            >> DISEÑADO CON 💜 PARA GAMERS <<
+        </p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

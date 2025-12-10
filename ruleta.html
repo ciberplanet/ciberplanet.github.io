@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎁 Ruleta de Premios | Ciber Planet</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon-cyan: #00f5ff;
+            --neon-magenta: #ff00ff;
+            --neon-purple: #bf00ff;
+            --neon-green: #39ff14;
+            --neon-yellow: #ffff00;
+            --neon-gold: #ffd700;
+            --dark-bg: #0a0a0f;
+            --darker-bg: #050508;
+            --card-bg: rgba(15, 15, 25, 0.9);
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0c0;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.1) 2px, rgba(0,0,0,0.1) 4px);
+            z-index: 9999;
+        }
+
+        .bg-animation {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -1;
+            background: 
+                radial-gradient(ellipse at 20% 80%, rgba(191, 0, 255, 0.2) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(0, 245, 255, 0.2) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(255, 215, 0, 0.1) 0%, transparent 70%);
+        }
+
+        .stars {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -2;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px; height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.5); }
+        }
+
+        nav {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(5, 5, 8, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 30px rgba(0, 245, 255, 0.2);
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-decoration: none;
+        }
+
+        .nav-logo img {
+            height: 80px;
+            filter: drop-shadow(0 0 10px var(--neon-cyan));
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--neon-cyan);
+            text-shadow: 0 0 20px var(--neon-cyan);
+        }
+
+        .main-container {
+            min-height: 100vh;
+            padding: 120px 2rem 3rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .page-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--neon-gold), var(--neon-yellow), var(--neon-gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: titleGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes titleGlow {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.3); }
+        }
+
+        .page-subtitle {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.6rem;
+            color: var(--neon-cyan);
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .info-box {
+            background: var(--card-bg);
+            border: 2px solid var(--neon-cyan);
+            border-radius: 15px;
+            padding: 1.5rem;
+            max-width: 600px;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .info-box h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--neon-gold);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .info-box p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-box .highlight {
+            color: var(--neon-green);
+            font-weight: 600;
+        }
+
+        .info-box .special {
+            background: linear-gradient(135deg, var(--neon-magenta), var(--neon-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+        }
+
+        .info-box .warning {
+            color: var(--neon-yellow);
+            font-size: 0.85rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* RULETA */
+        .wheel-container {
+            position: relative;
+            margin: 2rem 0;
+        }
+
+        .wheel-wrapper {
+            position: relative;
+            width: 350px;
+            height: 350px;
+        }
+
+        .wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            position: relative;
+            box-shadow: 
+                0 0 0 8px var(--neon-gold),
+                0 0 0 12px var(--dark-bg),
+                0 0 0 16px var(--neon-cyan),
+                0 0 40px rgba(255, 215, 0, 0.5),
+                0 0 80px rgba(0, 245, 255, 0.3);
+            transition: transform 5s cubic-bezier(0.17, 0.67, 0.12, 0.99), box-shadow 0.3s ease, filter 0.3s ease;
+            background: conic-gradient(
+                from 0deg,
+                #ff6b6b 0deg 45deg,
+                #4ecdc4 45deg 90deg,
+                #a855f7 90deg 135deg,
+                #3b82f6 135deg 180deg,
+                #f59e0b 180deg 225deg,
+                #10b981 225deg 270deg,
+                #ffd700 270deg 315deg,
+                #ec4899 315deg 360deg
+            );
+            animation: idleSpin 20s linear infinite;
+        }
+
+        @keyframes idleSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .wheel.spinning {
+            animation: none !important;
+        }
+
+        /* Luces LED alrededor */
+        .wheel-leds {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            height: 400px;
+            pointer-events: none;
+        }
+
+        .led {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            animation: ledBlink 0.5s ease-in-out infinite;
+        }
+
+        @keyframes ledBlink {
+            0%, 100% { opacity: 0.5; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        /* Textos de la ruleta */
+        .wheel-labels {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .wheel-label {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.55rem;
+            font-weight: 700;
+            color: white;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.9), 0 0 5px rgba(0,0,0,0.5);
+            text-align: center;
+            width: 80px;
+            transform-origin: center center;
+            line-height: 1.2;
+            transition: all 0.3s ease;
+        }
+
+        .wheel-label:nth-child(1) { --rot: 22.5deg; transform: translate(-50%, -50%) rotate(22.5deg) translateY(-120px) rotate(-22.5deg); }
+        .wheel-label:nth-child(2) { --rot: 67.5deg; transform: translate(-50%, -50%) rotate(67.5deg) translateY(-120px) rotate(-67.5deg); }
+        .wheel-label:nth-child(3) { --rot: 112.5deg; transform: translate(-50%, -50%) rotate(112.5deg) translateY(-120px) rotate(-112.5deg); }
+        .wheel-label:nth-child(4) { --rot: 157.5deg; transform: translate(-50%, -50%) rotate(157.5deg) translateY(-120px) rotate(-157.5deg); }
+        .wheel-label:nth-child(5) { --rot: 202.5deg; transform: translate(-50%, -50%) rotate(202.5deg) translateY(-120px) rotate(-202.5deg); }
+        .wheel-label:nth-child(6) { --rot: 247.5deg; transform: translate(-50%, -50%) rotate(247.5deg) translateY(-120px) rotate(-247.5deg); }
+        .wheel-label:nth-child(7) { 
+            --rot: 292.5deg;
+            transform: translate(-50%, -50%) rotate(292.5deg) translateY(-120px) rotate(-292.5deg); 
+            color: #000;
+            text-shadow: 0 0 5px #fff, 0 0 10px #ffd700, 1px 1px 2px rgba(255,255,255,0.8);
+            font-size: 0.5rem;
+            font-weight: 900;
+        }
+        .wheel-label:nth-child(8) { --rot: 337.5deg; transform: translate(-50%, -50%) rotate(337.5deg) translateY(-120px) rotate(-337.5deg); }
+
+        .wheel-pointer {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-top: 40px solid var(--neon-gold);
+            filter: drop-shadow(0 0 10px var(--neon-gold));
+            z-index: 10;
+            animation: pointerGlow 1s ease-in-out infinite;
+        }
+
+        @keyframes pointerGlow {
+            0%, 100% { filter: drop-shadow(0 0 10px var(--neon-gold)); }
+            50% { filter: drop-shadow(0 0 25px var(--neon-gold)) drop-shadow(0 0 40px var(--neon-magenta)); }
+        }
+
+        .wheel-pointer::after {
+            content: '';
+            position: absolute;
+            top: -45px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 15px;
+            height: 15px;
+            background: var(--neon-gold);
+            border-radius: 50%;
+            box-shadow: 0 0 15px var(--neon-gold);
+            animation: pointerDotPulse 0.5s ease-in-out infinite;
+        }
+
+        @keyframes pointerDotPulse {
+            0%, 100% { transform: translateX(-50%) scale(1); }
+            50% { transform: translateX(-50%) scale(1.3); }
+        }
+
+        .wheel-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--dark-bg), #1a1a2e);
+            border-radius: 50%;
+            border: 4px solid var(--neon-gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+            z-index: 5;
+            transition: all 0.3s ease;
+            animation: centerGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes centerGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.5); }
+            50% { box-shadow: 0 0 40px rgba(255, 215, 0, 0.8), 0 0 60px rgba(0, 245, 255, 0.4); }
+        }
+
+        /* Partículas flotantes alrededor de la ruleta */
+        .wheel-particles {
+            position: absolute;
+            top: -50px;
+            left: -50px;
+            width: calc(100% + 100px);
+            height: calc(100% + 100px);
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--neon-cyan);
+            border-radius: 50%;
+            animation: particleFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes particleFloat {
+            0% { transform: translateY(100%) rotate(0deg); opacity: 0; }
+            20% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { transform: translateY(-100%) rotate(360deg); opacity: 0; }
+        }
+
+        .spin-btn {
+            margin-top: 2rem;
+            padding: 1.2rem 3rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--dark-bg);
+            background: linear-gradient(135deg, var(--neon-gold), var(--neon-yellow));
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            animation: btnPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes btnPulse {
+            0%, 100% { box-shadow: 0 0 30px rgba(255, 215, 0, 0.5); }
+            50% { box-shadow: 0 0 50px rgba(255, 215, 0, 0.8), 0 0 80px rgba(255, 0, 255, 0.3); }
+        }
+
+        .spin-btn::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.4), transparent);
+            transform: rotate(45deg);
+            animation: btnShine 3s linear infinite;
+        }
+
+        @keyframes btnShine {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+
+        .spin-btn:hover:not(:disabled) {
+            transform: scale(1.05);
+            box-shadow: 0 0 50px rgba(255, 215, 0, 0.8);
+        }
+
+        .spin-btn:active:not(:disabled) {
+            transform: scale(0.95);
+        }
+
+        .spin-btn:disabled {
+            background: #555;
+            color: #888;
+            cursor: not-allowed;
+            box-shadow: none;
+            animation: none;
+        }
+
+        .spin-btn:disabled::before {
+            display: none;
+        }
+
+        .instructions {
+            background: var(--card-bg);
+            border: 2px solid var(--neon-magenta);
+            border-radius: 15px;
+            padding: 1.5rem;
+            max-width: 500px;
+            margin-top: 2rem;
+        }
+
+        .instructions h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--neon-magenta);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .instructions ol {
+            color: var(--text-secondary);
+            padding-left: 1.5rem;
+        }
+
+        .instructions li {
+            margin-bottom: 0.8rem;
+            line-height: 1.5;
+        }
+
+        .instructions .phone {
+            color: var(--neon-green);
+            font-weight: 700;
+        }
+
+        .instructions .date {
+            color: var(--neon-yellow);
+            font-weight: 700;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--card-bg);
+            border: 3px solid var(--neon-gold);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+            animation: modalPop 0.5s ease;
+            box-shadow: 0 0 50px rgba(255, 215, 0, 0.5);
+        }
+
+        @keyframes modalPop {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .modal.jackpot {
+            border-color: var(--neon-gold);
+            box-shadow: 0 0 100px rgba(255, 215, 0, 0.8);
+        }
+
+        .modal-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .modal-prize {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            color: var(--neon-green);
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: rgba(57, 255, 20, 0.1);
+            border: 2px solid var(--neon-green);
+            border-radius: 10px;
+        }
+
+        .modal-prize.jackpot {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 183, 0, 0.2));
+            border-color: var(--neon-gold);
+            color: var(--neon-gold);
+            font-size: 1.5rem;
+            animation: jackpotPulse 0.5s ease-in-out infinite;
+        }
+
+        @keyframes jackpotPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .modal-instructions {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-top: 1rem;
+        }
+
+        .modal-close {
+            margin-top: 1.5rem;
+            padding: 0.8rem 2rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            color: var(--dark-bg);
+            background: var(--neon-cyan);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px var(--neon-cyan);
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            top: -10px;
+            z-index: 10001;
+            animation: confettiFall 3s linear forwards;
+        }
+
+        @keyframes confettiFall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+
+        .already-played {
+            background: var(--card-bg);
+            border: 2px solid var(--neon-magenta);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        .already-played h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--neon-magenta);
+            margin-bottom: 1rem;
+        }
+
+        .already-played p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .already-played .saved-prize {
+            background: rgba(57, 255, 20, 0.1);
+            border: 2px solid var(--neon-green);
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 1rem 0;
+            color: var(--neon-green);
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.8rem 2rem;
+            font-family: 'Orbitron', sans-serif;
+            color: var(--neon-cyan);
+            border: 2px solid var(--neon-cyan);
+            border-radius: 25px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: var(--neon-cyan);
+            color: var(--dark-bg);
+        }
+
+        .firework {
+            position: fixed;
+            pointer-events: none;
+            z-index: 10002;
+        }
+
+        .firework-particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            animation: fireworkExplode 1s ease-out forwards;
+        }
+
+        @keyframes fireworkExplode {
+            0% { transform: translate(0, 0) scale(1); opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+        }
+
+        @media (max-width: 768px) {
+            nav { flex-direction: column; gap: 1rem; padding: 1rem; }
+            .nav-links { gap: 1rem; flex-wrap: wrap; justify-content: center; }
+            .wheel-wrapper { width: 300px; height: 300px; }
+            .wheel-leds { width: 340px; height: 340px; }
+            .wheel-label { font-size: 0.45rem; width: 65px; }
+            .wheel-label:nth-child(1) { transform: translate(-50%, -50%) rotate(22.5deg) translateY(-100px) rotate(-22.5deg); }
+            .wheel-label:nth-child(2) { transform: translate(-50%, -50%) rotate(67.5deg) translateY(-100px) rotate(-67.5deg); }
+            .wheel-label:nth-child(3) { transform: translate(-50%, -50%) rotate(112.5deg) translateY(-100px) rotate(-112.5deg); }
+            .wheel-label:nth-child(4) { transform: translate(-50%, -50%) rotate(157.5deg) translateY(-100px) rotate(-157.5deg); }
+            .wheel-label:nth-child(5) { transform: translate(-50%, -50%) rotate(202.5deg) translateY(-100px) rotate(-202.5deg); }
+            .wheel-label:nth-child(6) { transform: translate(-50%, -50%) rotate(247.5deg) translateY(-100px) rotate(-247.5deg); }
+            .wheel-label:nth-child(7) { transform: translate(-50%, -50%) rotate(292.5deg) translateY(-100px) rotate(-292.5deg); }
+            .wheel-label:nth-child(8) { transform: translate(-50%, -50%) rotate(337.5deg) translateY(-100px) rotate(-337.5deg); }
+            .wheel-center { width: 50px; height: 50px; font-size: 1.3rem; }
+            .wheel { animation: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    <div class="stars" id="stars"></div>
+
+    <nav>
+        <a href="index.html" class="nav-logo">
+            <img src="firma-ciber.png" alt="Ciber Planet Logo">
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="index.html#servicios">Servicios</a></li>
+            <li><a href="index.html#promociones">Promociones</a></li>
+            <li><a href="index.html#contacto">Contacto</a></li>
+        </ul>
+    </nav>
+
+    <div class="main-container" id="mainContainer">
+        <h1 class="page-title">🎁 RULETA DE PREMIOS 🎁</h1>
+        <p class="page-subtitle">// ¡GIRA Y GANA! //</p>
+
+        <div class="info-box">
+            <h3>🎉 ¡CELEBRAMOS LA INAUGURACIÓN DE NUESTRA PÁGINA WEB! 🎉</h3>
+            <p>Estos descuentos son exclusivos para <span class="highlight">CLIENTES FRECUENTES</span> de Ciber Planet.</p>
+            <p>Pero por <span class="special">ocasión especial de inauguración</span>, ¡está disponible para <span class="highlight">TODOS los clientes</span>!</p>
+            <p class="warning">⚠️ Solo tienes UN intento. ¡Hazlo valer!</p>
+        </div>
+
+        <div class="wheel-container">
+            <div class="wheel-pointer"></div>
+            <div class="wheel-wrapper">
+                <!-- LEDs alrededor -->
+                <div class="wheel-leds" id="wheelLeds"></div>
+                <!-- Partículas -->
+                <div class="wheel-particles" id="wheelParticles"></div>
+                <div class="wheel" id="wheel">
+                    <div class="wheel-labels" id="wheelLabels">
+                        <div class="wheel-label">10% TRÁMITES</div>
+                        <div class="wheel-label">20% ACTAS NAC.</div>
+                        <div class="wheel-label">2 HRS GRATIS PC</div>
+                        <div class="wheel-label">10% REP. COMPU</div>
+                        <div class="wheel-label">5% REP. CELULAR</div>
+                        <div class="wheel-label">20% INST. PROG.</div>
+                        <div class="wheel-label">🏆 50% ACTAS 🏆</div>
+                        <div class="wheel-label">REGALO SORPRESA 🥳</div>
+                    </div>
+                </div>
+                <div class="wheel-center">🎰</div>
+            </div>
+        </div>
+
+        <button class="spin-btn" id="spinBtn" onclick="spinWheel()">
+            🎲 ¡GIRAR RULETA! 🎲
+        </button>
+
+        <div class="instructions">
+            <h3>📋 INSTRUCCIONES</h3>
+            <ol>
+                <li>Presiona el botón <strong>"¡GIRAR RULETA!"</strong> para obtener tu premio</li>
+                <li>Cuando ganes, <strong>toma una captura de pantalla (screenshot)</strong> de tu premio</li>
+                <li>Envía tu captura por WhatsApp al número: <span class="phone"><a href="https://wa.me/524471070706">4471070706</a></span></li>
+                <li>Presenta tu captura en el ciber para hacer válido tu premio</li>
+                <li>Tu premio es válido hasta el: <span class="date">09 de Enero de 2025</span></li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="main-container" id="alreadyPlayed" style="display: none;">
+        <div class="already-played">
+            <h2>😅 ¡Ya participaste!</h2>
+            <p>Solo se permite un giro por persona.</p>
+            <div class="saved-prize" id="savedPrize"></div>
+            <p>Recuerda: Válido hasta el <strong style="color: var(--neon-yellow);">09 de Enero de 2025</strong></p>
+            <p>Envía tu screenshot al: <strong style="color: var(--neon-green);">447 107 0706</strong></p>
+            <a href="index.html" class="back-btn">← Volver al Inicio</a>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal" id="modal">
+            <h2 class="modal-title" id="modalTitle">🎉 ¡FELICIDADES! 🎉</h2>
+            <div class="modal-prize" id="modalPrize"></div>
+            <div class="modal-instructions">
+                <p>📸 <strong>Toma screenshot de esta pantalla</strong></p>
+                <p>📱 Envíalo al WhatsApp: <strong style="color: var(--neon-green);">447 107 0706</strong></p>
+                <p>📅 Válido hasta: <strong style="color: var(--neon-yellow);">09 de Enero de 2025</strong></p>
+            </div>
+            <button class="modal-close" onclick="closeModal()">¡ENTENDIDO!</button>
+        </div>
+    </div>
+
+    <script>
+        const prizes = [
+            { name: "10% de descuento en trámites", color: "#ff6b6b" },
+            { name: "20% de descuento en Actas de Nacimiento", color: "#4ecdc4" },
+            { name: "2 HORAS GRATIS en nuestras computadoras", color: "#a855f7" },
+            { name: "10% de descuento en reparación de computadoras", color: "#3b82f6" },
+            { name: "5% de descuento en reparación de celulares", color: "#f59e0b" },
+            { name: "20% de descuento en instalación de programas", color: "#10b981" },
+            { name: "🏆 ¡PREMIO MAYOR! 50% de descuento en Actas de Nacimiento 🏆", color: "#ffd700", isJackpot: true },
+            { name: "🥳 ¡REGALO SORPRESA! Pasa al ciber para descubrir tu sorpresa 🎁", color: "#ec4899" }
+        ];
+
+        let isSpinning = false;
+
+        // Crear estrellas de fondo
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            for (let i = 0; i < 80; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+        createStars();
+
+        // Crear LEDs alrededor de la ruleta
+        function createLeds() {
+            const ledsContainer = document.getElementById('wheelLeds');
+            const numLeds = 24;
+            const radius = 190;
+            const centerOffset = 200;
+            const colors = ['#00f5ff', '#ff00ff', '#ffd700', '#39ff14'];
+            
+            for (let i = 0; i < numLeds; i++) {
+                const led = document.createElement('div');
+                led.className = 'led';
+                const angle = (i / numLeds) * Math.PI * 2 - Math.PI / 2;
+                const x = Math.cos(angle) * radius + centerOffset - 4;
+                const y = Math.sin(angle) * radius + centerOffset - 4;
+                led.style.left = x + 'px';
+                led.style.top = y + 'px';
+                led.style.background = colors[i % colors.length];
+                led.style.boxShadow = `0 0 10px ${colors[i % colors.length]}, 0 0 20px ${colors[i % colors.length]}`;
+                led.style.animationDelay = (i * 0.08) + 's';
+                ledsContainer.appendChild(led);
+            }
+        }
+        createLeds();
+
+        // Crear partículas flotantes
+        function createParticles() {
+            const particlesContainer = document.getElementById('wheelParticles');
+            const colors = ['#00f5ff', '#ff00ff', '#ffd700', '#39ff14', '#ff6ec7'];
+            
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.animationDelay = (Math.random() * 3) + 's';
+                particle.style.animationDuration = (2 + Math.random() * 2) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+        createParticles();
+
+        // Efecto de sonido simulado con vibración visual
+        function playTickEffect() {
+            const wheel = document.getElementById('wheel');
+            wheel.style.filter = 'brightness(1.2)';
+            setTimeout(() => {
+                wheel.style.filter = 'brightness(1)';
+            }, 50);
+        }
+
+        function checkIfPlayed() {
+            const played = localStorage.getItem('ciberPlanetRuletaPlayed');
+            const prize = localStorage.getItem('ciberPlanetRuletaPrize');
+            
+            if (played === 'true' && prize) {
+                document.getElementById('mainContainer').style.display = 'none';
+                document.getElementById('alreadyPlayed').style.display = 'flex';
+                document.getElementById('savedPrize').textContent = '🎁 Tu premio: ' + prize;
+            }
+        }
+        checkIfPlayed();
+
+        function spinWheel() {
+            if (isSpinning) return;
+            isSpinning = true;
+
+            const wheel = document.getElementById('wheel');
+            const spinBtn = document.getElementById('spinBtn');
+            
+            // Detener animación idle
+            wheel.classList.add('spinning');
+            wheel.style.animation = 'none';
+            
+            spinBtn.disabled = true;
+            spinBtn.textContent = '🎲 GIRANDO... 🎲';
+
+            // Efecto de tick durante el giro
+            let tickInterval = setInterval(playTickEffect, 100);
+
+            let prizeIndex;
+            const rand = Math.random();
+            if (rand < 0.05) {
+                prizeIndex = 6; // 5% jackpot
+            } else {
+                const others = [0, 1, 2, 3, 4, 5, 7];
+                prizeIndex = others[Math.floor(Math.random() * others.length)];
+            }
+
+            const segmentAngle = 360 / 8;
+            const targetAngle = (360 - (prizeIndex * segmentAngle + segmentAngle / 2));
+            const spins = 5 + Math.floor(Math.random() * 3);
+            const totalRotation = spins * 360 + targetAngle;
+
+            // Reset y aplicar rotación
+            wheel.style.transition = 'none';
+            wheel.style.transform = 'rotate(0deg)';
+            
+            setTimeout(() => {
+                wheel.style.transition = 'transform 5s cubic-bezier(0.17, 0.67, 0.12, 0.99)';
+                wheel.style.transform = `rotate(${totalRotation}deg)`;
+            }, 50);
+
+            // Reducir velocidad de ticks gradualmente
+            setTimeout(() => clearInterval(tickInterval), 4000);
+
+            setTimeout(() => {
+                const prize = prizes[prizeIndex];
+                
+                localStorage.setItem('ciberPlanetRuletaPlayed', 'true');
+                localStorage.setItem('ciberPlanetRuletaPrize', prize.name);
+
+                showWinModal(prize);
+                isSpinning = false;
+            }, 5000);
+        }
+
+        function showWinModal(prize) {
+            const modal = document.getElementById('modal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalPrize = document.getElementById('modalPrize');
+            const overlay = document.getElementById('modalOverlay');
+
+            if (prize.isJackpot) {
+                modal.classList.add('jackpot');
+                modalPrize.classList.add('jackpot');
+                modalTitle.innerHTML = '🏆✨ ¡¡¡JACKPOT!!! ✨🏆';
+                modalTitle.style.color = '#ffd700';
+                createFireworks();
+                createMegaConfetti();
+            } else {
+                modal.classList.remove('jackpot');
+                modalPrize.classList.remove('jackpot');
+                modalTitle.innerHTML = '🎉 ¡FELICIDADES! 🎉';
+                modalTitle.style.color = '#39ff14';
+            }
+
+            modalPrize.textContent = '🎁 ' + prize.name;
+            overlay.classList.add('show');
+            createConfetti();
+        }
+
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.remove('show');
+            checkIfPlayed();
+        }
+
+        function createConfetti() {
+            const colors = ['#ff6b6b', '#4ecdc4', '#ffd700', '#ff00ff', '#00f5ff', '#39ff14'];
+            for (let i = 0; i < 100; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                    document.body.appendChild(confetti);
+                    setTimeout(() => confetti.remove(), 4000);
+                }, i * 30);
+            }
+        }
+
+        function createMegaConfetti() {
+            const colors = ['#ffd700', '#ff6b6b', '#00f5ff', '#ff00ff', '#39ff14', '#fff'];
+            for (let i = 0; i < 200; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.width = (Math.random() * 10 + 5) + 'px';
+                    confetti.style.height = (Math.random() * 10 + 5) + 'px';
+                    confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                    document.body.appendChild(confetti);
+                    setTimeout(() => confetti.remove(), 5000);
+                }, i * 20);
+            }
+        }
+
+        function createFireworks() {
+            for (let fw = 0; fw < 8; fw++) {
+                setTimeout(() => {
+                    const firework = document.createElement('div');
+                    firework.className = 'firework';
+                    firework.style.left = (10 + Math.random() * 80) + 'vw';
+                    firework.style.top = (10 + Math.random() * 50) + 'vh';
+                    
+                    const colors = ['#ffd700', '#ff6b6b', '#00f5ff', '#ff00ff', '#39ff14'];
+                    
+                    for (let i = 0; i < 30; i++) {
+                        const particle = document.createElement('div');
+                        particle.className = 'firework-particle';
+                        particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                        const angle = (i / 30) * Math.PI * 2;
+                        const distance = 60 + Math.random() * 80;
+                        particle.style.setProperty('--tx', Math.cos(angle) * distance + 'px');
+                        particle.style.setProperty('--ty', Math.sin(angle) * distance + 'px');
+                        firework.appendChild(particle);
+                    }
+                    
+                    document.body.appendChild(firework);
+                    setTimeout(() => firework.remove(), 1500);
+                }, fw * 300);
+            }
+        }
+    </script>
+</body>
+</html>
