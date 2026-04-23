@@ -4,305 +4,449 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ciber Planet | Centro de Gaming & Internet</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@400;500;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="icono.png">
+    <style>
+        :root {
+            --cyan: #00f5ff;
+            --magenta: #ff00ff;
+            --purple: #bf00ff;
+            --green: #39ff14;
+            --dark: #0a0a0f;
+            --darker: #050508;
+        }
 
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: var(--dark);
+            color: #fff;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Scanlines */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.07) 3px, rgba(0,0,0,0.07) 4px);
+            z-index: 9999;
+        }
+
+        /* Fondo radial */
+        .bg {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            background:
+                radial-gradient(ellipse at 15% 85%, rgba(191,0,255,0.18) 0%, transparent 55%),
+                radial-gradient(ellipse at 85% 15%, rgba(0,245,255,0.15) 0%, transparent 55%),
+                radial-gradient(ellipse at 50% 50%, rgba(0,20,40,0.8) 0%, var(--dark) 70%);
+        }
+
+        /* Grid perspectiva */
+        .grid-bg {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background-image:
+                linear-gradient(rgba(0,245,255,0.045) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,245,255,0.045) 1px, transparent 1px);
+            background-size: 55px 55px;
+            transform: perspective(600px) rotateX(55deg);
+            transform-origin: top;
+            animation: gridMove 25s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0%   { background-position: 0 0; }
+            100% { background-position: 0 55px; }
+        }
+
+        /* Stars */
+        .stars { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
+        .star {
+            position: absolute;
+            width: 2px; height: 2px;
+            background: #fff;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; }
+            50%       { opacity: 1; }
+        }
+
+        /* ── NAV ─────────────────────────────────── */
+        nav {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%;
+            z-index: 1000;
+            backdrop-filter: blur(16px);
+            background: rgba(5,5,8,0.92);
+            border-bottom: 1px solid rgba(0,245,255,0.15);
+            overflow: visible;
+        }
+        .nav-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.3rem 2.5rem;
+            gap: 1rem;
+            height: 62px;
+        }
+        .nav-logo { position: relative; }
+        .nav-logo a { display: flex; align-items: center; }
+        .nav-logo img {
+            height: 110px;
+            position: relative;
+            top: 12px;
+            filter: drop-shadow(0 0 8px var(--cyan));
+            transition: filter 0.3s, transform 0.3s;
+        }
+        .nav-logo img:hover {
+            filter: drop-shadow(0 0 18px var(--cyan)) drop-shadow(0 0 35px var(--magenta));
+            transform: scale(1.06);
+        }
+        .nav-links { display: flex; gap: 0.3rem; list-style: none; align-items: center; }
+        .nav-links a {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.72rem; font-weight: 600;
+            color: #fff; text-decoration: none;
+            padding: 0.45rem 0.85rem;
+            position: relative; transition: color 0.3s;
+            letter-spacing: 0.04em; white-space: nowrap;
+        }
+        .nav-links a::after {
+            content: ''; position: absolute; bottom: 0; left: 0;
+            width: 100%; height: 2px;
+            background: linear-gradient(90deg, var(--cyan), var(--magenta));
+            transform: scaleX(0); transition: transform 0.3s;
+        }
+        .nav-links a:hover { color: var(--cyan); }
+        .nav-links a:hover::after, .nav-links a.active::after { transform: scaleX(1); }
+        .nav-links a.active { color: var(--cyan); }
+        .nav-toggle {
+            display: none; flex-direction: column; gap: 5px;
+            cursor: pointer; padding: 6px;
+            background: none; border: none; z-index: 10;
+        }
+        .nav-toggle span {
+            display: block; width: 26px; height: 2px;
+            background: var(--cyan); border-radius: 2px;
+            transition: all 0.3s; box-shadow: 0 0 6px var(--cyan);
+        }
+        .nav-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .nav-toggle.open span:nth-child(2) { opacity: 0; }
+        .nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+        .nav-dropdown {
+            display: none; flex-direction: column;
+            background: rgba(5,5,8,0.98);
+            border-top: 1px solid rgba(0,245,255,0.1);
+            padding: 0.5rem 0 0.8rem;
+        }
+        .nav-dropdown.open { display: flex; }
+        .nav-dropdown li { list-style: none; }
+        .nav-dropdown a {
+            font-family: 'Orbitron', sans-serif; font-size: 0.72rem; font-weight: 600;
+            color: #fff; text-decoration: none; padding: 0.75rem 2rem;
+            display: block; letter-spacing: 0.05em;
+            border-left: 2px solid transparent;
+            transition: color 0.2s, border-color 0.2s, background 0.2s;
+        }
+        .nav-dropdown a:hover, .nav-dropdown a.active {
+            color: var(--cyan); border-left-color: var(--cyan);
+            background: rgba(0,245,255,0.05);
+        }
+        @media (max-width: 768px) {
+            .nav-inner { padding: 0.3rem 1.2rem; height: 54px; }
+            .nav-logo img { height: 80px; top: 10px; }
+            .nav-links { display: none; }
+            .nav-toggle { display: flex; }
+        }
+
+        /* ── HERO ────────────────────────────────── */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 120px 2rem 4rem;
+            position: relative;
+        }
+
+        .hero-logo {
+            width: min(520px, 82vw);
+            margin-bottom: 2rem;
+            animation: float 6s ease-in-out infinite;
+            filter: drop-shadow(0 0 30px rgba(0,245,255,0.4)) drop-shadow(0 0 60px rgba(191,0,255,0.2));
+            transition: filter 0.3s;
+        }
+        .hero-logo:hover {
+            filter: drop-shadow(0 0 50px rgba(0,245,255,0.7)) drop-shadow(0 0 90px rgba(255,0,255,0.4));
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50%       { transform: translateY(-18px); }
+        }
+
+        .hero-tagline {
+            font-family: 'Press Start 2P', cursive;
+            font-size: clamp(0.5rem, 1.8vw, 0.85rem);
+            color: var(--green);
+            text-shadow: 0 0 12px var(--green), 0 0 25px rgba(57,255,20,0.4);
+            margin-bottom: 3rem;
+            letter-spacing: 0.08em;
+            animation: taglinePulse 3s ease-in-out infinite;
+        }
+        @keyframes taglinePulse {
+            0%, 100% { opacity: 1; }
+            50%       { opacity: 0.75; }
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 1.4rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        /* Botones */
+        .btn {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 700;
+            padding: 0.9rem 2.4rem;
+            cursor: pointer;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            transition: all 0.3s;
+            clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--cyan), var(--purple));
+            color: var(--dark);
+        }
+        .btn-primary:hover {
+            box-shadow: 0 0 25px var(--cyan), 0 0 50px rgba(191,0,255,0.5);
+            transform: translateY(-3px) scale(1.02);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--cyan);
+            border: 1.5px solid var(--cyan);
+        }
+        .btn-secondary:hover {
+            background: rgba(0,245,255,0.08);
+            box-shadow: 0 0 22px rgba(0,245,255,0.35);
+            transform: translateY(-3px) scale(1.02);
+        }
+
+        /* Astronaut cat */
+        .astronaut-wrap {
+            position: fixed;
+            bottom: 0px;
+            left: 30px;
+            width: 260px;
+            z-index: 100;
+            pointer-events: none;
+            animation: astroFloat 4s ease-in-out infinite;
+        }
+        .astronaut {
+            width: 100%;
+            display: block;
+            filter: drop-shadow(0 0 18px rgba(191,0,255,0.7)) drop-shadow(0 0 35px rgba(0,245,255,0.35));
+        }
+        @keyframes astroFloat {
+            0%, 100% { transform: translateY(0px) rotate(-2deg); }
+            50%       { transform: translateY(-20px) rotate(2deg); }
+        }
+
+        /* Fire particles */
+        .fire-container {
+            position: absolute;
+            /* Rocket exhaust is at bottom-left of the image */
+            bottom: 22%;
+            left: 2%;
+            width: 50px;
+            height: 0;
+            pointer-events: none;
+            transform: rotate(45deg); /* align with rocket angle */
+        }
+        .fire-particle {
+            position: absolute;
+            bottom: 0;
+            border-radius: 50% 30% 50% 30%;
+            opacity: 0;
+            animation: fireShoot linear infinite;
+        }
+        @keyframes fireShoot {
+            0%   { transform: translate(0, 0) scale(1);   opacity: 1; }
+            50%  { opacity: 0.7; }
+            100% { transform: translate(var(--dx), var(--dy)) scale(0.2); opacity: 0; }
+        }
+
+        /* Floating pixels */
+        .pixel-container { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+        .px {
+            position: absolute;
+            width: 6px; height: 6px;
+            border-radius: 1px;
+            opacity: 0;
+            animation: floatPx linear infinite;
+        }
+        @keyframes floatPx {
+            0%   { transform: translateY(110vh) rotate(0deg);   opacity: 0; }
+            8%   { opacity: 0.7; }
+            92%  { opacity: 0.7; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--darker); }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(var(--cyan), var(--magenta));
+            border-radius: 4px;
+        }
+        ::selection { background: var(--magenta); color: var(--dark); }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-btns { flex-direction: column; align-items: center; }
+            .btn { width: 260px; text-align: center; }
+            .astronaut-wrap { width: 110px; left: 8px; }
+        }
+    </style>
 </head>
 <body>
-    <!-- Loading Screen -->
-    <div class="loading-screen" id="loadingScreen">
-        <img src="firma-ciber.png" alt="Ciber Planet" style="width: 300px; filter: drop-shadow(0 0 30px rgba(0, 245, 255, 0.5));">
-        <div class="loading-bar">
-            <div class="loading-progress"></div>
-        </div>
-        <p class="loading-text">INICIANDO SISTEMA...</p>
+
+    <div class="bg"></div>
+    <div class="grid-bg"></div>
+    <div class="stars" id="stars"></div>
+    <div class="pixel-container" id="pixels"></div>
+
+    <!-- Astronaut cat with fire -->
+    <div class="astronaut-wrap">
+        <div class="fire-container" id="fireContainer"></div>
+        <img src="robin-astronauta.png" alt="Robin astronauta" class="astronaut">
     </div>
 
-    <!-- Background Effects -->
-    <div class="bg-animation"></div>
-    <div class="stars" id="stars"></div>
-    <canvas class="matrix-bg" id="matrix"></canvas>
-    <div class="grid-overlay"></div>
-    <div class="pixel-container" id="pixelContainer"></div>
+    <!-- NAV -->
 
-    <!-- Navigation -->
     <nav>
-        <div class="nav-logo">
-            <img src="firma-ciber.png" alt="Ciber Planet Logo">
+        <div class="nav-inner">
+            <div class="nav-logo">
+                <a href="index.html"><img src="firma-ciber.png" alt="Ciber Planet Logo"></a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="servicios.html">Servicios</a></li>
+                <li><a href="trabajos.html">Trabajos</a></li>
+                <li><a href="contacto.html">Contacto</a></li>
+                <li><a href="contacto.html#ubicacion">Ubicación</a></li>
+            </ul>
+            <button class="nav-toggle" id="navToggle" aria-label="Menú">
+                <span></span><span></span><span></span>
+            </button>
         </div>
-        <ul class="nav-links">
-            <li><a href="#inicio">Inicio</a></li>
-            <li><a href="#servicios">Servicios</a></li>
-            <li><a href="#promociones">Promociones</a></li>
-            <li><a href="#opiniones">Opiniones</a></li>
-            <li><a href="#contacto">Contacto</a></li>
+        <ul class="nav-dropdown" id="navDropdown">
+            <li><a href="servicios.html">Servicios</a></li>
+            <li><a href="trabajos.html">Trabajos</a></li>
+            <li><a href="contacto.html">Contacto</a></li>
+            <li><a href="contacto.html#ubicacion">Ubicación</a></li>
         </ul>
     </nav>
 
-    <!-- Hero Section -->
-    <section class="hero" id="inicio">
+    <!-- HERO -->
+    <div class="hero">
         <img src="firma-ciber.png" alt="Ciber Planet" class="hero-logo">
-        <h1 class="glitch" data-text="CIBER PLANET"><span class="cyber">CIBER</span> <span class="planet">PLANET</span></h1>
         <p class="hero-tagline">>> TU PORTAL AL MUNDO DIGITAL <<</p>
-        <div class="hero-buttons">
-            <a href="#promociones" class="btn btn-primary">VER PROMOCIONES</a>
-            <a href="#contacto" class="btn btn-secondary">UBICACIÓN</a>
+        <div class="hero-btns">
+            <a href="servicios.html" class="btn btn-primary">Ver Servicios</a>
+            <a href="contacto.html" class="btn btn-secondary">Contáctanos</a>
         </div>
-        <a href="ruleta.html" class="btn-gift">
-            <span class="gift-icon">🎁</span>
-            <span class="gift-text">OBTENER MI REGALO</span>
-            <span class="gift-sparkle">✨</span>
-        </a>
-        <div class="scroll-indicator">
-            <span>SCROLL</span>
-            <div class="scroll-arrow"></div>
-        </div>
-    </section>
+    </div>
 
-    <!-- Services Section -->
-    <section class="services" id="servicios">
-        <h2 class="section-title">SERVICIOS</h2>
-        <p class="section-subtitle">// LO QUE OFRECEMOS //</p>
-        <div class="services-grid">
-            <div class="service-card reveal">
-                <span class="service-icon">🎮</span>
-                <h3>Gaming Zone</h3>
-                <p>PCs de alto rendimiento con las últimas GPUs para gaming competitivo y casual. Juega tus títulos favoritos sin lag.</p>
-            </div>
-            <div class="service-card reveal">
-                <span class="service-icon">🌐</span>
-                <h3>Internet de Alta Velocidad</h3>
-                <p>Conexión de fibra óptica ultra rápida para navegación, streaming y descargas sin interrupciones.</p>
-            </div>
-            <div class="service-card reveal">
-                <span class="service-icon">🖨️</span>
-                <h3>Impresiones & Copias</h3>
-                <p>Servicio de impresión a color y B/N, copias, escaneos y encuadernados. Todo lo que necesitas.</p>
-            </div>
-            <div class="service-card reveal">
-                <span class="service-icon">📱</span>
-                <h3>Recargas & Pagos</h3>
-                <p>Recargas telefónicas de todas las compañías. Rápido y seguro.</p>
-            </div>
-            <div class="service-card reveal">
-                <span class="service-icon">💾</span>
-                <h3>Papelería Digital</h3>
-                <p>Trabajos escolares, currículums, formatos oficiales. Te ayudamos con tus documentos.</p>
-            </div>
-            <div class="service-card reveal">
-                <span class="service-icon">📲</span>
-                <h3>Reparación de Celulares</h3>
-                <p>Reparamos pantallas, baterías, puertos de carga y más. Tu celular como nuevo en poco tiempo.</p>
-            </div>
-            <div class="service-card reveal">
-                <span class="service-icon">💻</span>
-                <h3>Reparación de Computadoras</h3>
-                <p>Mantenimiento, formateos, limpieza de virus, actualizaciones y reparación de hardware. Soluciones rápidas.</p>
-            </div>
-            <div class="service-card reveal">
-                <span class="service-icon">🎨</span>
-                <h3>Diseño Gráfico & Web</h3>
-                <p>Creación de logos, tarjetas de presentación, páginas de Facebook, imágenes promocionales y diseño de páginas web.</p>
-            </div>
-        </div>
-    </section>
+    <script>
+        // Stars
+        const sc = document.getElementById('stars');
+        for (let i = 0; i < 120; i++) {
+            const s = document.createElement('div');
+            s.className = 'star';
+            s.style.left = Math.random() * 100 + '%';
+            s.style.top  = Math.random() * 100 + '%';
+            s.style.animationDelay    = Math.random() * 3 + 's';
+            s.style.animationDuration = (Math.random() * 2 + 2) + 's';
+            sc.appendChild(s);
+        }
 
-    <!-- Stats Section -->
-    <section class="stats-section">
-        <div class="stats-container">
-            <div class="stat-item reveal">
-                <div class="stat-number" data-target="5">0</div>
-                <p class="stat-label">AÑOS DE EXPERIENCIA</p>
-            </div>
-            <div class="stat-item reveal">
-                <div class="stat-number" data-target="1000">0</div>
-                <p class="stat-label">CLIENTES FELICES</p>
-            </div>
-            <div class="stat-item reveal">
-                <div class="stat-number" data-target="500">0</div>
-                <p class="stat-label">REPARACIONES</p>
-            </div>
-            <div class="stat-item reveal">
-                <div class="stat-number" data-target="100">0</div>
-                <p class="stat-label">DISEÑOS CREADOS</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Promotions Section -->
-    <section class="prices" id="promociones">
-        <h2 class="section-title">PROMOCIONES</h2>
-        <p class="section-subtitle">// LAS MEJORES PROMOCIONES A TU ALCANCE //</p>
-        <div class="prices-grid">
-            <div class="price-card reveal">
-                <h3>🔥 DESCUENTOS</h3>
-                <div class="price-amount" style="font-size: 2rem;">HASTA 30%</div>
-                <p class="price-duration">EN TRÁMITES</p>
-                <ul class="price-features">
-                    <li>Descuentos en impresiones por volumen</li>
-                    <li>Promociones en reparaciones</li>
-                    <li>Paquetes especiales para estudiantes</li>
-                    <li>Precios especiales para empresas</li>
-                </ul>
-                <a href="#contacto" class="btn btn-secondary">PREGUNTAR</a>
-            </div>
-            <div class="price-card featured reveal">
-                <div class="popular-badge">⭐ DESTACADO ⭐</div>
-                <h3>⭐ PROMO DEL MES</h3>
-                <div class="price-amount" style="font-size: 2rem;">OFERTAS</div>
-                <p class="price-duration">ESPECIALES</p>
-                <ul class="price-features">
-                    <li>Renovamos promociones cada mes</li>
-                    <li>Descuentos en diseño gráfico</li>
-                    <li>Paquetes de horas de internet</li>
-                    <li>Combos de impresión + engargolado</li>
-                    <li>¡Síguenos en Facebook!</li>
-                </ul>
-                <a href="https://www.facebook.com/profile.php?id=61581123667975" class="btn btn-primary" target="_blank">VER EN FACEBOOK</a>
-            </div>
-            <div class="price-card reveal">
-                <h3>🎁 CLIENTES FRECUENTES</h3>
-                <div class="price-amount" style="font-size: 2rem;">BENEFICIOS</div>
-                <p class="price-duration">EXCLUSIVOS</p>
-                <ul class="price-features">
-                    <li>Acumula puntos por cada visita</li>
-                    <li>Descuentos especiales</li>
-                    <li>Prioridad en reparaciones</li>
-                    <li>Promociones exclusivas</li>
-                </ul>
-                <a href="#contacto" class="btn btn-secondary">ÚNETE</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Reviews Section -->
-    <section class="gaming-zone" id="opiniones">
-        <h2 class="section-title">OPINIONES</h2>
-        <p class="section-subtitle">// LO QUE DICEN NUESTROS CLIENTES //</p>
-        
-        <!-- Rating Overview - FIXED -->
-        <div class="rating-overview">
-            <div class="rating-stars">
-                <span class="rating-star full">★</span>
-                <span class="rating-star full">★</span>
-                <span class="rating-star full">★</span>
-                <span class="rating-star full">★</span>
-                <span class="rating-star half">★</span>
-            </div>
-            <div class="rating-score">4.5</div>
-            <p class="rating-text">Calificación promedio basada en nuestros clientes</p>
-        </div>
-
-        <div class="reviews-container">
-            <div class="review-card reveal">
-                <div class="review-header">
-                    <div class="review-avatar">👤</div>
-                    <div class="review-info">
-                        <h4>María García</h4>
-                        <span class="review-stars">★★★★★</span>
-                    </div>
-                </div>
-                <p class="review-text">"Excelente servicio, el internet es súper rápido y el personal muy amable. Siempre vengo a hacer mis impresiones aquí. ¡100% recomendado!"</p>
-            </div>
-
-            <div class="review-card reveal">
-                <div class="review-header">
-                    <div class="review-avatar">👤</div>
-                    <div class="review-info">
-                        <h4>Carlos Hernández</h4>
-                        <span class="review-stars">★★★★★</span>
-                    </div>
-                </div>
-                <p class="review-text">"Me repararon mi celular en tiempo récord y a muy buen precio. El trato fue muy profesional y amable. Definitivamente regresaré."</p>
-            </div>
-
-            <div class="review-card reveal">
-                <div class="review-header">
-                    <div class="review-avatar">👤</div>
-                    <div class="review-info">
-                        <h4>Ana Martínez</h4>
-                        <span class="review-stars">★★★★★</span>
-                    </div>
-                </div>
-                <p class="review-text">"El mejor ciber de la zona. Internet veloz, buen ambiente y precios accesibles. El servicio al cliente es de primera."</p>
-            </div>
-
-            <div class="review-card reveal">
-                <div class="review-header">
-                    <div class="review-avatar">👤</div>
-                    <div class="review-info">
-                        <h4>Roberto López</h4>
-                        <span class="review-stars">★★★★☆</span>
-                    </div>
-                </div>
-                <p class="review-text">"Muy buen lugar para trabajar y estudiar. El internet nunca falla y siempre hay computadoras disponibles. El personal muy atento."</p>
-            </div>
-
-            <div class="review-card reveal">
-                <div class="review-header">
-                    <div class="review-avatar">👤</div>
-                    <div class="review-info">
-                        <h4>Laura Sánchez</h4>
-                        <span class="review-stars">★★★★★</span>
-                    </div>
-                </div>
-                <p class="review-text">"Me hicieron un logo increíble para mi negocio. Muy creativos y el precio muy justo. ¡Súper recomendados para diseño!"</p>
-            </div>
-
-            <div class="review-card reveal">
-                <div class="review-header">
-                    <div class="review-avatar">👤</div>
-                    <div class="review-info">
-                        <h4>Miguel Ángel</h4>
-                        <span class="review-stars">★★★★★</span>
-                    </div>
-                </div>
-                <p class="review-text">"Llevo años viniendo aquí. Siempre con promociones buenas y el servicio cada vez mejor. El equipo es muy profesional y amigable."</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section class="contact" id="contacto">
-        <h2 class="section-title">CONTACTO</h2>
-        <p class="section-subtitle">// VISÍTANOS //</p>
-        <div style="max-width: 600px; margin: 0 auto;">
-            <div class="contact-info">
-                <a href="https://maps.app.goo.gl/TkMbacxHM3ZoYvf79" target="_blank" class="contact-item" style="text-decoration: none;">
-                    <span class="contact-item-icon">📍</span>
-                    <div class="contact-item-text">
-                        <h4>UBICACIÓN</h4>
-                        <p>Ver en Google Maps</p>
-                    </div>
-                </a>
-                <a href="https://wa.me/524471070706" target="_blank" class="contact-item" style="text-decoration: none;">
-                    <span class="contact-item-icon">📱</span>
-                    <div class="contact-item-text">
-                        <h4>WHATSAPP</h4>
-                        <p>447 107 0706</p>
-                    </div>
-                </a>
-                <div class="contact-item">
-                    <span class="contact-item-icon">🕐</span>
-                    <div class="contact-item-text">
-                        <h4>HORARIO</h4>
-                        <p>Lunes a Viernes: 9:00 AM - 5:00 PM</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <img src="firma-ciber.png" alt="Ciber Planet" class="footer-logo">
-        <p class="footer-text">
-            © 2024 <span>CIBER PLANET</span> - TODOS LOS DERECHOS RESERVADOS<br>
-            >> DISEÑADO CON 💜 PARA GAMERS <<
-        </p>
-    </footer>
-
-    <script src="script.js"></script>
+        // Fire particles — shoot toward bottom-left (rocket exhaust direction)
+        const fc = document.getElementById('fireContainer');
+        const fireColors = [
+            '#fff7a0','#ffee44','#ffaa00','#ff6600','#ff3300',
+            '#cc00ff','#8800cc','#ffffff'
+        ];
+        function spawnFire() {
+            const f = document.createElement('div');
+            f.className = 'fire-particle';
+            const size = Math.random() * 16 + 8;
+            // Direction: down-left (negative X, positive Y in screen coords)
+            const dx = -(Math.random() * 60 + 30);  // go left
+            const dy =  (Math.random() * 60 + 30);  // go down
+            const dur = Math.random() * 0.45 + 0.3;
+            f.style.width  = size + 'px';
+            f.style.height = size + 'px';
+            f.style.left   = (Math.random() * 20) + 'px';
+            f.style.bottom = (Math.random() * 10) + 'px';
+            f.style.background = fireColors[Math.floor(Math.random() * fireColors.length)];
+            f.style.boxShadow  = `0 0 ${size * 1.2}px ${f.style.background}`;
+            f.style.setProperty('--dx', dx + 'px');
+            f.style.setProperty('--dy', dy + 'px');
+            f.style.animationDuration = dur + 's';
+            fc.appendChild(f);
+            setTimeout(() => f.remove(), dur * 1000);
+        }
+        setInterval(spawnFire, 35);
+        const pc = document.getElementById('pixels');
+        const colors = ['#00f5ff','#ff00ff','#bf00ff','#39ff14','#ff6ec7','#ffffff'];
+        for (let i = 0; i < 55; i++) {
+            const p = document.createElement('div');
+            p.className = 'px';
+            p.style.left            = Math.random() * 100 + '%';
+            p.style.bottom          = '-10px';
+            p.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            p.style.width           = (Math.random() * 5 + 3) + 'px';
+            p.style.height          = p.style.width;
+            p.style.animationDelay    = Math.random() * 18 + 's';
+            p.style.animationDuration = (Math.random() * 12 + 10) + 's';
+            pc.appendChild(p);
+        }
+        // Nav hamburger
+        (function(){
+            var t = document.getElementById('navToggle');
+            var d = document.getElementById('navDropdown');
+            if(!t||!d) return;
+            t.addEventListener('click', function(){
+                t.classList.toggle('open');
+                d.classList.toggle('open');
+            });
+            d.querySelectorAll('a').forEach(function(a){
+                a.addEventListener('click', function(){
+                    t.classList.remove('open');
+                    d.classList.remove('open');
+                });
+            });
+        })();
+    </script>
 </body>
 </html>

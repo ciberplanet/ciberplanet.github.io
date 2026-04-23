@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trabajos | Ciber Planet</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@400;500;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="icono.png">
+    <style>
+        :root {
+            --cyan: #00f5ff;
+            --magenta: #ff00ff;
+            --purple: #bf00ff;
+            --green: #39ff14;
+            --dark: #0a0a0f;
+            --darker: #050508;
+            --card: rgba(15,15,25,0.85);
+            --muted: #9090a8;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: var(--dark);
+            color: #fff;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        body::before {
+            content: ''; position: fixed; inset: 0; pointer-events: none;
+            background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.07) 3px, rgba(0,0,0,0.07) 4px);
+            z-index: 9999;
+        }
+
+        .bg {
+            position: fixed; inset: 0; z-index: -2;
+            background:
+                radial-gradient(ellipse at 80% 90%, rgba(191,0,255,0.16) 0%, transparent 55%),
+                radial-gradient(ellipse at 20% 10%, rgba(0,245,255,0.12) 0%, transparent 55%);
+        }
+
+        .grid-bg {
+            position: fixed; inset: 0; z-index: -1;
+            background-image:
+                linear-gradient(rgba(191,0,255,0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(191,0,255,0.04) 1px, transparent 1px);
+            background-size: 55px 55px;
+            transform: perspective(600px) rotateX(55deg);
+            transform-origin: top;
+            animation: gridMove 25s linear infinite;
+        }
+        @keyframes gridMove { 0% { background-position: 0 0; } 100% { background-position: 0 55px; } }
+
+        .stars { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
+        .star { position: absolute; width: 2px; height: 2px; background: #fff; border-radius: 50%; animation: twinkle 3s infinite; }
+        @keyframes twinkle { 0%, 100% { opacity: 0.2; } 50% { opacity: 1; } }
+
+        /* ── NAV ─────────────────────────────────── */
+        nav {
+            position: fixed; top: 0; left: 0; width: 100%;
+            z-index: 1000;
+            backdrop-filter: blur(16px);
+            background: rgba(5,5,8,0.92);
+            border-bottom: 1px solid rgba(0,245,255,0.15);
+            overflow: visible;
+        }
+        .nav-inner {
+            display: flex; align-items: center;
+            justify-content: space-between;
+            padding: 0.3rem 2.5rem; gap: 1rem;
+            height: 62px;
+        }
+        .nav-logo { position: relative; }
+        .nav-logo a { display: flex; align-items: center; }
+        .nav-logo img {
+            height: 110px;
+            position: relative;
+            top: 12px;
+            filter: drop-shadow(0 0 8px var(--cyan));
+            transition: filter 0.3s, transform 0.3s;
+        }
+        .nav-logo img:hover {
+            filter: drop-shadow(0 0 18px var(--cyan)) drop-shadow(0 0 35px var(--magenta));
+            transform: scale(1.06);
+        }
+        .nav-links { display: flex; gap: 0.3rem; list-style: none; align-items: center; }
+        .nav-links a {
+            font-family: 'Orbitron', sans-serif; font-size: 0.72rem; font-weight: 600;
+            color: #fff; text-decoration: none; padding: 0.45rem 0.85rem;
+            position: relative; transition: color 0.3s;
+            letter-spacing: 0.04em; white-space: nowrap;
+        }
+        .nav-links a::after {
+            content: ''; position: absolute; bottom: 0; left: 0;
+            width: 100%; height: 2px;
+            background: linear-gradient(90deg, var(--cyan), var(--magenta));
+            transform: scaleX(0); transition: transform 0.3s;
+        }
+        .nav-links a:hover { color: var(--cyan); }
+        .nav-links a:hover::after, .nav-links a.active::after { transform: scaleX(1); }
+        .nav-links a.active { color: var(--cyan); }
+        .nav-toggle {
+            display: none; flex-direction: column; gap: 5px;
+            cursor: pointer; padding: 6px; background: none; border: none;
+        }
+        .nav-toggle span {
+            display: block; width: 26px; height: 2px;
+            background: var(--cyan); border-radius: 2px;
+            transition: all 0.3s; box-shadow: 0 0 6px var(--cyan);
+        }
+        .nav-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .nav-toggle.open span:nth-child(2) { opacity: 0; }
+        .nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+        .nav-dropdown {
+            display: none; flex-direction: column;
+            background: rgba(5,5,8,0.98);
+            border-top: 1px solid rgba(0,245,255,0.1);
+            padding: 0.5rem 0 0.8rem;
+        }
+        .nav-dropdown.open { display: flex; }
+        .nav-dropdown li { list-style: none; }
+        .nav-dropdown a {
+            font-family: 'Orbitron', sans-serif; font-size: 0.72rem; font-weight: 600;
+            color: #fff; text-decoration: none; padding: 0.75rem 2rem;
+            display: block; letter-spacing: 0.05em;
+            border-left: 2px solid transparent;
+            transition: color 0.2s, border-color 0.2s, background 0.2s;
+        }
+        .nav-dropdown a:hover, .nav-dropdown a.active {
+            color: var(--cyan); border-left-color: var(--cyan);
+            background: rgba(0,245,255,0.05);
+        }
+        @media (max-width: 768px) {
+            .nav-inner { padding: 0.3rem 1.2rem; height: 54px; }
+            .nav-logo img { height: 80px; top: 10px; }
+            .nav-links { display: none; }
+            .nav-toggle { display: flex; }
+        }
+
+        /* PÁGINA */
+        .page { padding: 140px 2rem 6rem; max-width: 1200px; margin: 0 auto; }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 900;
+            text-align: center; margin-bottom: 0.4rem;
+            background: linear-gradient(135deg, var(--magenta), var(--purple));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        .section-sub {
+            font-family: 'Press Start 2P', cursive; font-size: 0.52rem;
+            color: var(--muted); text-align: center; letter-spacing: 0.1em; margin-bottom: 0.8rem;
+        }
+        .divider {
+            width: 80px; height: 3px;
+            background: linear-gradient(90deg, var(--magenta), var(--purple));
+            margin: 0 auto 3.5rem; border-radius: 2px;
+        }
+
+        /* GRID */
+        .trabajos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.6rem;
+        }
+
+        .trabajo-card {
+            background: var(--card);
+            border: 1px solid rgba(191,0,255,0.2);
+            overflow: hidden;
+            opacity: 0; transform: translateY(40px);
+            transition: opacity 0.7s ease, transform 0.7s ease, border-color 0.35s, box-shadow 0.35s;
+        }
+        .trabajo-card.active { opacity: 1; transform: translateY(0); }
+        .trabajo-card:hover {
+            border-color: var(--purple);
+            transform: translateY(-7px) !important;
+            box-shadow: 0 15px 40px rgba(191,0,255,0.18);
+        }
+
+        .trabajo-thumb {
+            width: 100%; height: 190px;
+            background: linear-gradient(135deg, rgba(0,245,255,0.05), rgba(191,0,255,0.08));
+            display: flex; align-items: center; justify-content: center;
+            font-size: 4.5rem;
+            border-bottom: 1px solid rgba(191,0,255,0.18);
+            transition: background 0.35s;
+        }
+        .trabajo-card:hover .trabajo-thumb {
+            background: linear-gradient(135deg, rgba(0,245,255,0.09), rgba(191,0,255,0.14));
+        }
+
+        .trabajo-info { padding: 1.5rem 1.8rem; }
+        .trabajo-info h3 {
+            font-family: 'Orbitron', sans-serif; font-size: 0.9rem; font-weight: 700;
+            color: var(--magenta); margin-bottom: 0.6rem;
+        }
+        .trabajo-info p { color: var(--muted); font-size: 1rem; line-height: 1.6; }
+
+        .trabajo-tag {
+            display: inline-block; margin-top: 1rem;
+            padding: 0.25rem 0.9rem;
+            background: rgba(191,0,255,0.1);
+            border: 1px solid rgba(191,0,255,0.3);
+            color: var(--purple);
+            font-family: 'Orbitron', sans-serif; font-size: 0.6rem; letter-spacing: 0.06em;
+        }
+
+        /* CTA */
+        .cta-wrap {
+            text-align: center; margin-top: 4rem;
+        }
+        .cta-wrap p {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.6rem; color: var(--muted);
+            margin-bottom: 1.5rem; line-height: 2;
+        }
+        .btn {
+            font-family: 'Orbitron', sans-serif; font-size: 0.85rem; font-weight: 700;
+            padding: 0.9rem 2.5rem; cursor: pointer;
+            text-decoration: none; text-transform: uppercase;
+            letter-spacing: 0.12em; transition: all 0.3s;
+            clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--magenta), var(--purple));
+            color: #fff;
+        }
+        .btn-primary:hover {
+            box-shadow: 0 0 25px var(--magenta), 0 0 50px rgba(191,0,255,0.5);
+            transform: translateY(-3px) scale(1.02);
+        }
+
+        /* FOOTER */
+        footer {
+            background: var(--darker); padding: 2rem;
+            text-align: center; border-top: 1px solid rgba(0,245,255,0.15);
+        }
+        .footer-logo { height: 80px; margin-bottom: 1rem; filter: drop-shadow(0 0 8px var(--cyan)); }
+        .footer-text { font-family: 'Press Start 2P', cursive; font-size: 0.48rem; color: var(--muted); line-height: 2.2; }
+        .footer-text span { color: var(--magenta); }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--darker); }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(var(--cyan), var(--magenta)); border-radius: 4px; }
+        ::selection { background: var(--magenta); color: var(--dark); }
+
+        @media (max-width: 768px) {
+                        .page { padding: 130px 1.2rem 4rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg"></div>
+    <div class="grid-bg"></div>
+    <div class="stars" id="stars"></div>
+
+    <nav>
+        <div class="nav-inner">
+            <div class="nav-logo">
+                <a href="index.html"><img src="firma-ciber.png" alt="Ciber Planet Logo"></a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="servicios.html">Servicios</a></li>
+                <li><a href="trabajos.html" class="active">Trabajos</a></li>
+                <li><a href="contacto.html">Contacto</a></li>
+                <li><a href="contacto.html#ubicacion">Ubicación</a></li>
+            </ul>
+            <button class="nav-toggle" id="navToggle" aria-label="Menú">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+        <ul class="nav-dropdown" id="navDropdown">
+            <li><a href="servicios.html">Servicios</a></li>
+            <li><a href="trabajos.html" class="active">Trabajos</a></li>
+            <li><a href="contacto.html">Contacto</a></li>
+            <li><a href="contacto.html#ubicacion">Ubicación</a></li>
+        </ul>
+    </nav>
+
+    <div class="page">
+        <h2 class="section-title">TRABAJOS</h2>
+        <p class="section-sub">// ALGUNOS DE NUESTROS PROYECTOS //</p>
+        <div class="divider"></div>
+
+        <div class="trabajos-grid">
+            <div class="trabajo-card">
+                <div class="trabajo-thumb">🎨</div>
+                <div class="trabajo-info">
+                    <h3>Logos & Branding</h3>
+                    <p>Diseño de identidad visual para negocios locales. Logos modernos y profesionales adaptados a cada cliente.</p>
+                    <span class="trabajo-tag">DISEÑO GRÁFICO</span>
+                </div>
+            </div>
+            <div class="trabajo-card">
+                <div class="trabajo-thumb">🌐</div>
+                <div class="trabajo-info">
+                    <h3>Páginas Web</h3>
+                    <p>Sitios web a medida para negocios, portafolios y tiendas en línea. Diseño moderno y responsivo.</p>
+                    <span class="trabajo-tag">DESARROLLO WEB</span>
+                </div>
+            </div>
+            <div class="trabajo-card">
+                <div class="trabajo-thumb">📱</div>
+                <div class="trabajo-info">
+                    <h3>Redes Sociales</h3>
+                    <p>Diseño de portadas, publicaciones y contenido visual para Facebook e Instagram.</p>
+                    <span class="trabajo-tag">SOCIAL MEDIA</span>
+                </div>
+            </div>
+            <div class="trabajo-card">
+                <div class="trabajo-thumb">📄</div>
+                <div class="trabajo-info">
+                    <h3>Documentos & Formatos</h3>
+                    <p>Currículums, cartas, trámites escolares y oficiales. Entrega rápida y profesional.</p>
+                    <span class="trabajo-tag">PAPELERÍA</span>
+                </div>
+            </div>
+            <div class="trabajo-card">
+                <div class="trabajo-thumb">🖨️</div>
+                <div class="trabajo-info">
+                    <h3>Impresiones Especiales</h3>
+                    <p>Carteles, flyers, tarjetas de presentación e invitaciones completamente personalizadas.</p>
+                    <span class="trabajo-tag">IMPRESIÓN</span>
+                </div>
+            </div>
+            <div class="trabajo-card">
+                <div class="trabajo-thumb">🔧</div>
+                <div class="trabajo-info">
+                    <h3>Reparaciones</h3>
+                    <p>Celulares y computadoras reparados con garantía. Diagnóstico sin costo adicional.</p>
+                    <span class="trabajo-tag">REPARACIÓN</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="cta-wrap">
+            <p>¿TIENES UN PROYECTO EN MENTE?<br>CONTÁCTANOS Y LO HACEMOS REALIDAD</p>
+            <a href="contacto.html" class="btn btn-primary">Contactar Ahora</a>
+        </div>
+    </div>
+
+    <footer>
+        <img src="firma-ciber.png" alt="Ciber Planet" class="footer-logo">
+        <p class="footer-text">© 2024 <span>CIBER PLANET</span> — TODOS LOS DERECHOS RESERVADOS</p>
+    </footer>
+
+    <script>
+        const sc = document.getElementById('stars');
+        for (let i = 0; i < 80; i++) {
+            const s = document.createElement('div');
+            s.className = 'star';
+            s.style.left = Math.random() * 100 + '%';
+            s.style.top  = Math.random() * 100 + '%';
+            s.style.animationDelay    = Math.random() * 3 + 's';
+            s.style.animationDuration = (Math.random() * 2 + 2) + 's';
+            sc.appendChild(s);
+        }
+
+        const obs = new IntersectionObserver(entries => {
+            entries.forEach((e, i) => {
+                if (e.isIntersecting) setTimeout(() => e.target.classList.add('active'), i * 100);
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.trabajo-card').forEach(el => obs.observe(el));
+        // Nav hamburger
+        (function(){
+            var t = document.getElementById('navToggle');
+            var d = document.getElementById('navDropdown');
+            if(!t||!d) return;
+            t.addEventListener('click', function(){
+                t.classList.toggle('open');
+                d.classList.toggle('open');
+            });
+            d.querySelectorAll('a').forEach(function(a){
+                a.addEventListener('click', function(){
+                    t.classList.remove('open');
+                    d.classList.remove('open');
+                });
+            });
+        })();
+    </script>
+</body>
+</html>
