@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trabajos | Ciber Planet</title>
+    <title>Páginas Web & Invitaciones | Ciber Planet</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@400;500;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="icono.png">
     <style>
@@ -140,14 +140,27 @@
             .nav-toggle { display: flex; }
         }
 
-        /* PÁGINA */
+        /* ── BACK BUTTON ─────────────────────────── */
+        .back-btn {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            font-family: 'Orbitron', sans-serif; font-size: 0.65rem; font-weight: 600;
+            color: var(--muted); text-decoration: none; letter-spacing: 0.08em;
+            padding: 0.5rem 1rem;
+            border: 1px solid rgba(0,245,255,0.2);
+            transition: all 0.3s;
+            margin-bottom: 2.5rem;
+            clip-path: polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);
+        }
+        .back-btn:hover { color: var(--cyan); border-color: var(--cyan); background: rgba(0,245,255,0.06); }
+
+        /* ── PÁGINA ─────────────────────────────── */
         .page { padding: 140px 2rem 6rem; max-width: 1200px; margin: 0 auto; }
 
         .section-title {
             font-family: 'Orbitron', sans-serif;
             font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 900;
             text-align: center; margin-bottom: 0.4rem;
-            background: linear-gradient(135deg, var(--magenta), var(--purple));
+            background: linear-gradient(135deg, var(--cyan), var(--purple));
             -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
         }
         .section-sub {
@@ -156,101 +169,70 @@
         }
         .divider {
             width: 80px; height: 3px;
-            background: linear-gradient(90deg, var(--magenta), var(--purple));
+            background: linear-gradient(90deg, var(--cyan), var(--purple));
             margin: 0 auto 3.5rem; border-radius: 2px;
         }
 
-        /* GRID */
-        .trabajos-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.6rem;
+        /* ── SECCIÓN TABS PRINCIPAL ─────────────── */
+        .main-tabs {
+            display: flex; gap: 1rem; justify-content: center;
+            margin-bottom: 3rem; flex-wrap: wrap;
         }
-
-        .trabajo-card {
-            background: var(--card);
-            border: 1px solid rgba(191,0,255,0.2);
-            overflow: hidden;
-            opacity: 0; transform: translateY(40px);
-            transition: opacity 0.7s ease, transform 0.7s ease, border-color 0.35s, box-shadow 0.35s;
-        }
-        .trabajo-card.active { opacity: 1; transform: translateY(0); }
-        .trabajo-card:hover {
-            border-color: var(--purple);
-            transform: translateY(-7px) !important;
-            box-shadow: 0 15px 40px rgba(191,0,255,0.18);
-        }
-
-        .trabajo-thumb {
-            width: 100%; height: 190px;
-            background: linear-gradient(135deg, rgba(0,245,255,0.05), rgba(191,0,255,0.08));
-            display: flex; align-items: center; justify-content: center;
-            font-size: 4.5rem;
-            border-bottom: 1px solid rgba(191,0,255,0.18);
-            transition: background 0.35s;
-        }
-        .trabajo-card:hover .trabajo-thumb {
-            background: linear-gradient(135deg, rgba(0,245,255,0.09), rgba(191,0,255,0.14));
-        }
-
-        .trabajo-info { padding: 1.5rem 1.8rem; }
-        .trabajo-info h3 {
-            font-family: 'Orbitron', sans-serif; font-size: 0.9rem; font-weight: 700;
-            color: var(--magenta); margin-bottom: 0.6rem;
-        }
-        .trabajo-info p { color: var(--muted); font-size: 1rem; line-height: 1.6; }
-
-        .trabajo-tag {
-            display: inline-block; margin-top: 1rem;
-            padding: 0.25rem 0.9rem;
-            background: rgba(191,0,255,0.1);
+        .main-tab {
+            font-family: 'Orbitron', sans-serif; font-size: 0.8rem; font-weight: 700;
+            letter-spacing: 0.08em; padding: 0.9rem 2.2rem;
+            background: transparent;
             border: 1px solid rgba(191,0,255,0.3);
-            color: var(--purple);
-            font-family: 'Orbitron', sans-serif; font-size: 0.6rem; letter-spacing: 0.06em;
+            color: var(--muted); cursor: pointer; transition: all 0.35s;
+            clip-path: polygon(12px 0%,100% 0%,calc(100% - 12px) 100%,0% 100%);
+            position: relative; overflow: hidden;
+        }
+        .main-tab::before {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(135deg, rgba(0,245,255,0.1), rgba(191,0,255,0.08));
+            opacity: 0; transition: opacity 0.35s;
+        }
+        .main-tab:hover::before { opacity: 1; }
+        .main-tab:hover { border-color: var(--cyan); color: var(--cyan); }
+        .main-tab.active {
+            background: linear-gradient(135deg, rgba(0,245,255,0.15), rgba(191,0,255,0.1));
+            border-color: var(--cyan); color: var(--cyan);
+            box-shadow: 0 0 20px rgba(0,245,255,0.2), inset 0 0 20px rgba(0,245,255,0.04);
+        }
+        .main-tab.active.inv {
+            background: linear-gradient(135deg, rgba(255,0,255,0.15), rgba(191,0,255,0.1));
+            border-color: var(--magenta); color: var(--magenta);
+            box-shadow: 0 0 20px rgba(255,0,255,0.2), inset 0 0 20px rgba(255,0,255,0.04);
         }
 
-        /* ── WEB SHOWCASE STAGE ─────────────────────────────── */
-        .web-showcase {
-            grid-column: 1 / -1 !important;
-            overflow: visible !important;
-            padding: 0 !important;
-            border-color: rgba(0,245,255,0.22) !important;
-            cursor: default;
+        /* ── SECCIÓN CONTENT ─────────────────────── */
+        .section-panel { display: none; animation: fadeIn 0.4s ease; }
+        .section-panel.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* ── SHOWCASE PANEL ─────────────────────── */
+        .showcase-wrap {
+            background: var(--card);
+            border: 1px solid rgba(0,245,255,0.22);
+            overflow: visible;
         }
-        .showcase-header {
-            padding: 1.6rem 2rem 1.2rem;
-            border-bottom: 1px solid rgba(0,245,255,0.1);
-        }
-        .showcase-label {
-            font-family: 'Orbitron', sans-serif; font-size: 0.85rem; font-weight: 700;
-            color: #fff; margin-bottom: 1rem; letter-spacing: 0.05em;
-        }
-        .showcase-label em { color: var(--cyan); font-style: normal; }
-        .showcase-tabs { display: flex; gap: 0.5rem; flex-wrap: wrap; }
-        .showcase-tab {
-            font-family: 'Orbitron', sans-serif; font-size: 0.65rem; font-weight: 600;
-            letter-spacing: 0.06em; padding: 0.5rem 1.2rem;
-            background: transparent; border: 1px solid rgba(191,0,255,0.3);
-            color: var(--muted); cursor: pointer; transition: all 0.3s;
-            clip-path: polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);
-        }
-        .showcase-tab:hover { border-color: var(--purple); color: var(--purple); }
-        .showcase-tab.active {
-            background: linear-gradient(135deg, rgba(191,0,255,0.18), rgba(0,245,255,0.08));
-            border-color: var(--cyan); color: var(--cyan);
+
+        .showcase-wrap.inv-wrap {
+            border-color: rgba(255,0,255,0.22);
         }
 
         /* Stage */
         .showcase-stage {
-            position: relative; height: 420px; overflow: hidden;
+            position: relative; height: 460px; overflow: hidden;
             background: linear-gradient(180deg, #05050a 0%, #0a0010 100%);
             display: flex; align-items: center; justify-content: center;
         }
         .stage-floor {
             position: absolute; bottom: 0; left: 0; right: 0; height: 80px;
-            background: linear-gradient(0deg, rgba(191,0,255,0.1) 0%, transparent 100%);
+            background: linear-gradient(0deg, rgba(0,245,255,0.08) 0%, transparent 100%);
             z-index: 1; pointer-events: none;
         }
+        .stage-floor.inv { background: linear-gradient(0deg, rgba(255,0,255,0.08) 0%, transparent 100%); }
         .stage-spotlight {
             position: absolute; inset: 0; pointer-events: none; z-index: 2;
             transition: background 0.55s ease;
@@ -281,7 +263,7 @@
         .stage-card-wrap.pos-right:hover { filter: brightness(0.62); }
 
         .stage-preview-card {
-            width: 330px; background: #07070f;
+            width: 340px; background: #07070f;
             border: 1px solid rgba(191,0,255,0.35);
             box-shadow: 0 8px 32px rgba(0,0,0,0.5);
             overflow: hidden;
@@ -289,6 +271,10 @@
         .pos-center .stage-preview-card {
             border-color: var(--cyan);
             box-shadow: 0 0 35px rgba(0,245,255,0.2), 0 20px 60px rgba(0,0,0,0.7);
+        }
+        .inv-wrap .pos-center .stage-preview-card {
+            border-color: var(--magenta);
+            box-shadow: 0 0 35px rgba(255,0,255,0.2), 0 20px 60px rgba(0,0,0,0.7);
         }
         .preview-bar {
             display: flex; align-items: center; gap: 6px;
@@ -302,11 +288,11 @@
             text-overflow: ellipsis; white-space: nowrap;
         }
         .preview-frame-wrap {
-            width: 330px; height: 225px; overflow: hidden;
+            width: 340px; height: 240px; overflow: hidden;
             position: relative; background: #0d0d18;
         }
         .preview-frame-wrap iframe {
-            width: 1320px; height: 900px;
+            width: 1360px; height: 960px;
             transform: scale(0.25); transform-origin: top left;
             pointer-events: none; border: none;
         }
@@ -318,91 +304,94 @@
             background: linear-gradient(135deg, rgba(0,245,255,0.03), rgba(191,0,255,0.06));
         }
         .pf-icon { font-size: 2.8rem; }
-        .pf-title {
-            font-family: 'Orbitron', sans-serif; font-size: 0.6rem;
-            color: var(--cyan); letter-spacing: 0.06em; text-align: center;
-        }
+        .pf-title { font-family: 'Orbitron', sans-serif; font-size: 0.6rem; color: var(--cyan); letter-spacing: 0.06em; text-align: center; }
         .pf-url { font-size: 0.55rem; color: var(--muted); text-align: center; max-width: 200px; word-break: break-all; }
 
         /* Stage controls */
         .stage-nav {
             position: absolute; top: 50%; transform: translateY(-50%); z-index: 20;
             background: rgba(0,0,0,0.55); border: 1px solid rgba(0,245,255,0.3);
-            color: var(--cyan); font-size: 1.6rem; width: 42px; height: 42px;
+            color: var(--cyan); font-size: 1.6rem; width: 44px; height: 44px;
             cursor: pointer; transition: all 0.3s;
             display: flex; align-items: center; justify-content: center;
         }
         .stage-nav:hover { background: rgba(0,245,255,0.12); box-shadow: 0 0 14px rgba(0,245,255,0.35); }
+        .inv-wrap .stage-nav { border-color: rgba(255,0,255,0.3); color: var(--magenta); }
+        .inv-wrap .stage-nav:hover { background: rgba(255,0,255,0.12); box-shadow: 0 0 14px rgba(255,0,255,0.35); }
         .stage-nav-left  { left: 1rem; }
         .stage-nav-right { right: 1rem; }
         .stage-dots {
-            position: absolute; bottom: 0.75rem; left: 50%; transform: translateX(-50%);
-            display: flex; gap: 7px; z-index: 20;
+            position: absolute; bottom: 1.1rem; left: 50%; transform: translateX(-50%);
+            display: flex; gap: 0.5rem; z-index: 20;
         }
         .stage-dot {
             width: 8px; height: 8px; border-radius: 50%;
-            background: rgba(255,255,255,0.15); border: 1px solid rgba(0,245,255,0.28);
-            cursor: pointer; transition: all 0.3s;
+            background: rgba(255,255,255,0.2); cursor: pointer; transition: all 0.3s;
+            border: 1px solid rgba(0,245,255,0.3);
         }
         .stage-dot.active { background: var(--cyan); box-shadow: 0 0 8px var(--cyan); }
+        .inv-wrap .stage-dot.active { background: var(--magenta); box-shadow: 0 0 8px var(--magenta); }
 
-        /* Info bar */
+        /* Showcase info bar */
         .showcase-info {
-            padding: 1.1rem 2rem 1.6rem;
-            display: flex; align-items: center;
-            justify-content: space-between; gap: 1rem; flex-wrap: wrap;
-            border-top: 1px solid rgba(0,245,255,0.08);
-        }
-        .showcase-info-text h4 {
-            font-family: 'Orbitron', sans-serif; font-size: 0.88rem;
-            color: #fff; margin-bottom: 0.2rem;
-        }
-        .showcase-info-text p { font-size: 0.9rem; color: var(--muted); }
-        .btn-open-site {
-            font-family: 'Orbitron', sans-serif; font-size: 0.7rem; font-weight: 700;
-            padding: 0.62rem 1.6rem; text-decoration: none; letter-spacing: 0.1em;
-            color: var(--dark); background: linear-gradient(135deg, var(--cyan), var(--purple));
-            clip-path: polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);
-            transition: all 0.3s; white-space: nowrap; display: inline-block;
-        }
-        .btn-open-site:hover {
-            box-shadow: 0 0 22px rgba(0,245,255,0.5); transform: translateY(-2px);
-        }
-        @media (max-width: 600px) {
-            .showcase-stage { height: 320px; }
-            .stage-card-wrap.pos-left, .stage-card-wrap.pos-right { display: none; }
-            .stage-preview-card { width: 280px; }
-            .preview-frame-wrap { width: 280px; height: 190px; }
-            .preview-frame-wrap iframe { width: 1120px; height: 762px; }
-        }
-
-        /* Showcase colapsable */
-        .web-showcase {
-            grid-column: auto !important; /* ocupa 1 celda normal colapsado */
-            transition: grid-column 0s, opacity 0.7s ease, transform 0.7s ease, border-color 0.35s, box-shadow 0.35s;
-        }
-        .web-showcase.expanded {
-            grid-column: 1 / -1 !important; /* full width al expandir */
-        }
-        .showcase-body {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.65s cubic-bezier(0.4, 0, 0.2, 1);
-            border-top: 0px solid transparent;
-        }
-        .web-showcase.expanded .showcase-body {
-            max-height: 900px;
+            padding: 1.2rem 2rem;
+            display: flex; align-items: center; justify-content: space-between;
+            gap: 1rem; flex-wrap: wrap;
             border-top: 1px solid rgba(0,245,255,0.1);
+            background: rgba(0,0,0,0.3);
         }
-        .web-showcase.expanded .trabajo-thumb { display: none; }
-        .web-showcase.expanded .trabajo-info  { display: none; }
-        /* Cuando está expandido, quitar cursor pointer del card (los botones internos lo tienen) */
-        .web-showcase.expanded { cursor: default; }
+        .inv-wrap .showcase-info { border-top-color: rgba(255,0,255,0.1); }
+        .showcase-info-text h4 {
+            font-family: 'Orbitron', sans-serif; font-size: 0.8rem;
+            font-weight: 700; color: var(--cyan); margin-bottom: 0.3rem;
+        }
+        .inv-wrap .showcase-info-text h4 { color: var(--magenta); }
+        .showcase-info-text p { font-size: 0.92rem; color: var(--muted); }
+        .btn-open-site {
+            font-family: 'Orbitron', sans-serif; font-size: 0.65rem; font-weight: 700;
+            letter-spacing: 0.08em; padding: 0.6rem 1.6rem;
+            background: linear-gradient(135deg, rgba(0,245,255,0.15), rgba(191,0,255,0.1));
+            border: 1px solid var(--cyan);
+            color: var(--cyan); text-decoration: none;
+            transition: all 0.3s; white-space: nowrap;
+            clip-path: polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);
+        }
+        .btn-open-site:hover { box-shadow: 0 0 22px rgba(0,245,255,0.5); transform: translateY(-2px); }
+        .inv-wrap .btn-open-site {
+            background: linear-gradient(135deg, rgba(255,0,255,0.15), rgba(191,0,255,0.1));
+            border-color: var(--magenta); color: var(--magenta);
+        }
+        .inv-wrap .btn-open-site:hover { box-shadow: 0 0 22px rgba(255,0,255,0.5); }
 
-        /* CTA */
-        .cta-wrap {
-            text-align: center; margin-top: 4rem;
+        /* ── SECTION HEADER dentro de cada panel ── */
+        .panel-header {
+            display: flex; align-items: center; gap: 1rem;
+            padding: 1.6rem 2rem 1.2rem;
+            border-bottom: 1px solid rgba(0,245,255,0.1);
         }
+        .inv-wrap .panel-header { border-bottom-color: rgba(255,0,255,0.1); }
+        .panel-icon { font-size: 2rem; }
+        .panel-title {
+            font-family: 'Orbitron', sans-serif; font-size: 1rem; font-weight: 700;
+            color: #fff; letter-spacing: 0.04em;
+        }
+        .panel-title em { color: var(--cyan); font-style: normal; }
+        .inv-wrap .panel-title em { color: var(--magenta); }
+        .panel-desc { font-size: 0.92rem; color: var(--muted); margin-top: 0.3rem; }
+
+        /* ── SECTION SEPARATOR ───────────────────── */
+        .section-separator {
+            display: flex; align-items: center; gap: 1.5rem;
+            margin: 4rem 0 3rem;
+        }
+        .sep-line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(191,0,255,0.3), transparent); }
+        .sep-label {
+            font-family: 'Press Start 2P', cursive; font-size: 0.42rem;
+            color: var(--purple); letter-spacing: 0.12em; white-space: nowrap;
+        }
+
+        /* ── CTA ─────────────────────────────────── */
+        .cta-wrap { text-align: center; margin-top: 4rem; }
         .cta-wrap p {
             font-family: 'Press Start 2P', cursive;
             font-size: 0.6rem; color: var(--muted);
@@ -424,7 +413,7 @@
             transform: translateY(-3px) scale(1.02);
         }
 
-        /* FOOTER */
+        /* ── FOOTER ─────────────────────────────── */
         footer {
             background: var(--darker); padding: 2rem;
             text-align: center; border-top: 1px solid rgba(0,245,255,0.15);
@@ -439,7 +428,12 @@
         ::selection { background: var(--magenta); color: var(--dark); }
 
         @media (max-width: 768px) {
-                        .page { padding: 130px 1.2rem 4rem; }
+            .page { padding: 130px 1.2rem 4rem; }
+            .showcase-stage { height: 340px; }
+            .stage-card-wrap.pos-left, .stage-card-wrap.pos-right { display: none; }
+            .stage-preview-card { width: 280px; }
+            .preview-frame-wrap { width: 280px; height: 190px; }
+            .preview-frame-wrap iframe { width: 1120px; height: 762px; }
         }
     </style>
 </head>
@@ -473,45 +467,61 @@
     </nav>
 
     <div class="page">
-        <h2 class="section-title">TRABAJOS</h2>
-        <p class="section-sub">// ALGUNOS DE NUESTROS PROYECTOS //</p>
+
+        <a href="trabajos.html" class="back-btn">← VOLVER A TRABAJOS</a>
+
+        <h2 class="section-title">PÁGINAS WEB & INVITACIONES</h2>
+        <p class="section-sub">// EJEMPLOS DE NUESTROS PROYECTOS DIGITALES //</p>
         <div class="divider"></div>
 
-        <div class="trabajos-grid">
+        <!-- TABS PRINCIPALES -->
+        <div class="main-tabs">
+            <button class="main-tab active" id="tabWebs" onclick="switchTab('webs')">🌐&nbsp; Páginas Web</button>
+            <button class="main-tab" id="tabInv"  onclick="switchTab('invitaciones')">💌&nbsp; Invitaciones Digitales</button>
+        </div>
 
-            <!-- ══ LOGOS & BRANDING ══ -->
-            <div class="trabajo-card" style="cursor:pointer;" onclick="window.location.href='logos-branding.html'">
-                <div class="trabajo-thumb">🎨</div>
-                <div class="trabajo-info">
-                    <h3>Logos & Branding</h3>
-                    <p>Diseño de identidad visual para negocios locales. Logos modernos y profesionales adaptados a cada cliente.</p>
-                    <span class="trabajo-tag">DISEÑO GRÁFICO</span>
-                    <span class="trabajo-tag" style="margin-left:0.4rem; border-color:rgba(0,245,255,0.4); color:var(--cyan); background:rgba(0,245,255,0.08);">VER GALERÍA →</span>
+        <!-- ══ SECCIÓN PÁGINAS WEB ══ -->
+        <div class="section-panel active" id="panelWebs">
+            <div class="showcase-wrap" id="showcaseWebs">
+                <div class="panel-header">
+                    <div class="panel-icon">🌐</div>
+                    <div>
+                        <div class="panel-title"><em>PÁGINAS WEB</em> — Sitios a medida</div>
+                        <div class="panel-desc">Diseño moderno, responsivo y completamente personalizado para tu negocio.</div>
+                    </div>
                 </div>
-            </div>
-
-            <!-- ══ PÁGINAS WEB / INVITACIONES — navega a nueva página ══ -->
-            <div class="trabajo-card" style="cursor:pointer;" onclick="window.location.href='webs-invitaciones.html'">
-                <div class="trabajo-thumb">🌐</div>
-                <div class="trabajo-info">
-                    <h3>Páginas Web / Invitaciones Web</h3>
-                    <p>Sitios web a medida e invitaciones digitales. Diseño moderno, responsivo y completamente personalizado.</p>
-                    <span class="trabajo-tag">DESARROLLO WEB</span>
-                    <span class="trabajo-tag" style="margin-left:0.4rem; border-color:rgba(255,0,255,0.4); color:var(--magenta); background:rgba(255,0,255,0.08);">💌 INVITACIONES</span>
-                    <span class="trabajo-tag" style="margin-left:0.4rem; border-color:rgba(0,245,255,0.4); color:var(--cyan); background:rgba(0,245,255,0.08);">VER EJEMPLOS →</span>
+                <div class="showcase-stage" id="stageWebs">
+                    <div class="stage-floor"></div>
+                    <div class="stage-spotlight" id="spotWebs"></div>
+                    <div class="stage-scene"    id="sceneWebs"></div>
+                    <button class="stage-nav stage-nav-left"  id="navLeftWebs"  onclick="event.stopPropagation()">&#8249;</button>
+                    <button class="stage-nav stage-nav-right" id="navRightWebs" onclick="event.stopPropagation()">&#8250;</button>
+                    <div class="stage-dots" id="dotsWebs"></div>
                 </div>
+                <div class="showcase-info" id="infoWebs"></div>
             </div>
+        </div>
 
-            <!-- ══ REPARACIONES ══ -->
-            <div class="trabajo-card">
-                <div class="trabajo-thumb">🔧</div>
-                <div class="trabajo-info">
-                    <h3>Reparaciones</h3>
-                    <p>Celulares y computadoras reparados con garantía. Diagnóstico sin costo adicional.</p>
-                    <span class="trabajo-tag">REPARACIÓN</span>
+        <!-- ══ SECCIÓN INVITACIONES ══ -->
+        <div class="section-panel" id="panelInv">
+            <div class="showcase-wrap inv-wrap" id="showcaseInv">
+                <div class="panel-header">
+                    <div class="panel-icon">💌</div>
+                    <div>
+                        <div class="panel-title"><em>INVITACIONES</em> WEB DIGITALES</div>
+                        <div class="panel-desc">Invitaciones únicas para XV años, bodas, bautizos y más. Compártelas con un link.</div>
+                    </div>
                 </div>
+                <div class="showcase-stage" id="stageInv">
+                    <div class="stage-floor inv"></div>
+                    <div class="stage-spotlight" id="spotInv"></div>
+                    <div class="stage-scene"    id="sceneInv"></div>
+                    <button class="stage-nav stage-nav-left"  id="navLeftInv"  onclick="event.stopPropagation()">&#8249;</button>
+                    <button class="stage-nav stage-nav-right" id="navRightInv" onclick="event.stopPropagation()">&#8250;</button>
+                    <div class="stage-dots" id="dotsInv"></div>
+                </div>
+                <div class="showcase-info" id="infoInv"></div>
             </div>
-
         </div>
 
         <div class="cta-wrap">
@@ -526,10 +536,10 @@
     </footer>
 
     <script>
-        // ── Estrellas ─────────────────────────────────────────
-        const sc = document.getElementById('stars');
-        for (let i = 0; i < 80; i++) {
-            const s = document.createElement('div');
+        /* ── Estrellas ───────────────────────────────────────── */
+        var sc = document.getElementById('stars');
+        for (var i = 0; i < 80; i++) {
+            var s = document.createElement('div');
             s.className = 'star';
             s.style.left = Math.random() * 100 + '%';
             s.style.top  = Math.random() * 100 + '%';
@@ -538,15 +548,7 @@
             sc.appendChild(s);
         }
 
-        // ── Cards con IntersectionObserver ────────────────────
-        const obs = new IntersectionObserver(function(entries) {
-            entries.forEach(function(e, i) {
-                if (e.isIntersecting) setTimeout(function(){ e.target.classList.add('active'); }, i * 120);
-            });
-        }, { threshold: 0.08 });
-        document.querySelectorAll('.trabajo-card').forEach(function(el) { obs.observe(el); });
-
-        // ── Nav hamburger ─────────────────────────────────────
+        /* ── Nav hamburger ───────────────────────────────────── */
         (function(){
             var t = document.getElementById('navToggle');
             var d = document.getElementById('navDropdown');
@@ -557,8 +559,8 @@
             });
         })();
 
-        // ── SHOWCASE 3D DATA ──────────────────────────────────
-        var showcaseData = {
+        /* ── DATA ────────────────────────────────────────────── */
+        var DATA = {
             webs: [
                 { url: 'https://ciberplanet.github.io/index.html', title: 'Ciber Planet',   desc: 'Sitio web oficial de Ciber Planet' },
                 { url: 'https://ciberplanet.github.io/index.html', title: 'Ciber Planet 2', desc: 'Ejemplo de sitio corporativo' },
@@ -566,41 +568,49 @@
             ],
             invitaciones: [
                 { url: 'https://invitacioneplanet.github.io/victoria_xv', title: 'Victoria XV Años',   desc: 'Invitación digital de quinceañera' },
-                { url: 'https://invitacioneplanet.github.io/victoria_xv', title: 'Victoria XV Años 2', desc: 'Invitación digital de quinceañera' },
-                { url: 'https://invitacioneplanet.github.io/victoria_xv', title: 'Victoria XV Años 3', desc: 'Invitación digital de quinceañera' }
+                { url: 'https://invitacioneplanet.github.io/victoria_xv', title: 'Victoria XV Años 2', desc: 'Segunda invitación de quinceañera' },
+                { url: 'https://invitacioneplanet.github.io/victoria_xv', title: 'Victoria XV Años 3', desc: 'Tercera invitación de quinceañera' }
             ]
         };
 
-        var spotlightGradients = [
-            'radial-gradient(ellipse 280px 360px at 50% 0%, rgba(0,245,255,0.55)  0%, rgba(0,245,255,0.18) 40%, transparent 68%)',
+        var spotWebs = [
+            'radial-gradient(ellipse 280px 360px at 50% 0%, rgba(0,245,255,0.55) 0%, rgba(0,245,255,0.18) 40%, transparent 68%)',
             'radial-gradient(ellipse 280px 360px at 50% 0%, rgba(191,0,255,0.6)   0%, rgba(191,0,255,0.2)  40%, transparent 68%)',
             'radial-gradient(ellipse 280px 360px at 50% 0%, rgba(57,255,20,0.4)   0%, rgba(57,255,20,0.12) 40%, transparent 68%)'
         ];
+        var spotInv = [
+            'radial-gradient(ellipse 280px 360px at 50% 0%, rgba(255,0,255,0.55) 0%, rgba(255,0,255,0.18) 40%, transparent 68%)',
+            'radial-gradient(ellipse 280px 360px at 50% 0%, rgba(191,0,255,0.6)  0%, rgba(191,0,255,0.2)  40%, transparent 68%)',
+            'radial-gradient(ellipse 280px 360px at 50% 0%, rgba(255,100,200,0.4) 0%, rgba(255,100,200,0.12) 40%, transparent 68%)'
+        ];
 
-        var activeTab   = 'webs';
-        var activeIndex = 1;
+        var activeWebs = 1;
+        var activeInv  = 1;
 
-        function getPos(i) {
-            var n    = showcaseData[activeTab].length;
-            var diff = (i - activeIndex + n) % n;
+        function getPos(i, active, total) {
+            var diff = (i - active + total) % total;
             if (diff === 0) return 'center';
             if (diff === 1) return 'right';
             return 'left';
         }
 
-        function renderShowcase() {
-            var items = showcaseData[activeTab];
-            var scene = document.getElementById('stageScene');
-            var dots  = document.getElementById('stageDots');
-            var spot  = document.getElementById('stageSpotlight');
-            var info  = document.getElementById('showcaseInfo');
-            if (!scene) return;
+        function buildScene(type) {
+            var isInv    = type === 'invitaciones';
+            var items    = DATA[type];
+            var active   = isInv ? activeInv : activeWebs;
+            var sceneEl  = document.getElementById(isInv ? 'sceneInv'  : 'sceneWebs');
+            var dotsEl   = document.getElementById(isInv ? 'dotsInv'   : 'dotsWebs');
+            var spotEl   = document.getElementById(isInv ? 'spotInv'   : 'spotWebs');
+            var infoEl   = document.getElementById(isInv ? 'infoInv'   : 'infoWebs');
+            var spots    = isInv ? spotInv : spotWebs;
+            var btnColor = isInv ? 'var(--magenta)' : 'var(--cyan)';
+            var borderColor = isInv ? 'rgba(255,0,255,0.22)' : 'rgba(0,245,255,0.22)';
 
-            spot.style.background = spotlightGradients[activeIndex % spotlightGradients.length];
+            spotEl.style.background = spots[active % spots.length];
+            sceneEl.innerHTML = '';
 
-            scene.innerHTML = '';
             items.forEach(function(item, i) {
-                var pos  = getPos(i);
+                var pos  = getPos(i, active, items.length);
                 var wrap = document.createElement('div');
                 wrap.className = 'stage-card-wrap pos-' + pos;
                 wrap.innerHTML =
@@ -616,65 +626,92 @@
                             ' onload="this.nextElementSibling.style.display=\'none\'"' +
                             ' onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'"></iframe>' +
                             '<div class="preview-fallback">' +
-                                '<div class="pf-icon">🌐</div>' +
+                                '<div class="pf-icon">' + (isInv ? '💌' : '🌐') + '</div>' +
                                 '<div class="pf-title">' + item.title + '</div>' +
                                 '<div class="pf-url">' + item.url + '</div>' +
                             '</div>' +
                         '</div>' +
                     '</div>';
                 if (pos !== 'center') {
-                    (function(idx){ wrap.addEventListener('click', function(){ activeIndex = idx; renderShowcase(); }); })(i);
+                    (function(idx, t){
+                        wrap.addEventListener('click', function(){
+                            if (t === 'invitaciones') activeInv = idx; else activeWebs = idx;
+                            buildScene(t);
+                        });
+                    })(i, type);
                 }
-                scene.appendChild(wrap);
+                sceneEl.appendChild(wrap);
             });
 
-            dots.innerHTML = '';
+            dotsEl.innerHTML = '';
             items.forEach(function(_, i) {
                 var d = document.createElement('div');
-                d.className = 'stage-dot' + (i === activeIndex ? ' active' : '');
-                (function(idx){ d.addEventListener('click', function(){ activeIndex = idx; renderShowcase(); }); })(i);
-                dots.appendChild(d);
+                d.className = 'stage-dot' + (i === active ? ' active' : '');
+                (function(idx, t){
+                    d.addEventListener('click', function(){
+                        if (t === 'invitaciones') activeInv = idx; else activeWebs = idx;
+                        buildScene(t);
+                    });
+                })(i, type);
+                dotsEl.appendChild(d);
             });
 
-            var nl = document.getElementById('navLeft');
-            var nr = document.getElementById('navRight');
+            /* nav arrows */
+            var nlId = isInv ? 'navLeftInv'  : 'navLeftWebs';
+            var nrId = isInv ? 'navRightInv' : 'navRightWebs';
+            var nl = document.getElementById(nlId);
+            var nr = document.getElementById(nrId);
             if (nl) {
-                nl.onclick = function(ev){ ev.stopPropagation(); var n=showcaseData[activeTab].length; activeIndex=(activeIndex-1+n)%n; renderShowcase(); };
-                nr.onclick = function(ev){ ev.stopPropagation(); var n=showcaseData[activeTab].length; activeIndex=(activeIndex+1)%n; renderShowcase(); };
+                nl.onclick = function(ev){
+                    ev.stopPropagation();
+                    var n = DATA[type].length;
+                    if (isInv) activeInv  = (activeInv  - 1 + n) % n;
+                    else       activeWebs = (activeWebs - 1 + n) % n;
+                    buildScene(type);
+                };
+                nr.onclick = function(ev){
+                    ev.stopPropagation();
+                    var n = DATA[type].length;
+                    if (isInv) activeInv  = (activeInv  + 1) % n;
+                    else       activeWebs = (activeWebs + 1) % n;
+                    buildScene(type);
+                };
             }
 
-            var cur = items[activeIndex];
-            info.innerHTML =
+            /* info bar */
+            var cur = items[active];
+            infoEl.innerHTML =
                 '<div class="showcase-info-text"><h4>' + cur.title + '</h4><p>' + cur.desc + '</p></div>' +
                 '<a href="' + cur.url + '" target="_blank" rel="noopener" class="btn-open-site">ABRIR SITIO →</a>';
         }
 
-        // ── Toggle showcase (expandir / colapsar) ─────────────
-        var showcaseRendered = false;
-        function toggleShowcase(e) {
-            e.stopPropagation();
-            var card = document.getElementById('webShowcaseCard');
-            if (card.classList.contains('expanded')) {
-                card.classList.remove('expanded');
-            } else {
-                card.classList.add('expanded');
-                if (!showcaseRendered) {
-                    renderShowcase();
-                    document.querySelectorAll('.showcase-tab').forEach(function(btn){
-                        btn.addEventListener('click', function(ev){
-                            ev.stopPropagation();
-                            document.querySelectorAll('.showcase-tab').forEach(function(b){ b.classList.remove('active'); });
-                            btn.classList.add('active');
-                            activeTab   = btn.dataset.tab;
-                            activeIndex = 1;
-                            renderShowcase();
-                        });
-                    });
-                    showcaseRendered = true;
-                }
-                setTimeout(function(){ card.scrollIntoView({ behavior:'smooth', block:'start' }); }, 120);
+        /* ── Tab switcher ────────────────────────────────────── */
+        var websRendered = false;
+        var invRendered  = false;
+
+        function switchTab(tab) {
+            document.getElementById('panelWebs').classList.toggle('active', tab === 'webs');
+            document.getElementById('panelInv').classList.toggle('active',  tab === 'invitaciones');
+
+            var tw = document.getElementById('tabWebs');
+            var ti = document.getElementById('tabInv');
+            tw.classList.toggle('active', tab === 'webs');
+            ti.classList.toggle('active', tab === 'invitaciones');
+            ti.classList.toggle('inv',    tab === 'invitaciones');
+
+            if (tab === 'webs' && !websRendered) {
+                buildScene('webs');
+                websRendered = true;
+            }
+            if (tab === 'invitaciones' && !invRendered) {
+                buildScene('invitaciones');
+                invRendered = true;
             }
         }
+
+        /* Render páginas web al cargar */
+        buildScene('webs');
+        websRendered = true;
     </script>
 </body>
 </html>

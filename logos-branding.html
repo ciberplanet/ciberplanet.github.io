@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logos & Branding | Ciber Planet</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@400;500;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="icono.png">
+    <style>
+        :root {
+            --cyan: #00f5ff;
+            --magenta: #ff00ff;
+            --purple: #bf00ff;
+            --green: #39ff14;
+            --dark: #0a0a0f;
+            --darker: #050508;
+            --card: rgba(15,15,25,0.85);
+            --muted: #9090a8;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: var(--dark);
+            color: #fff;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        body::before {
+            content: ''; position: fixed; inset: 0; pointer-events: none;
+            background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.07) 3px, rgba(0,0,0,0.07) 4px);
+            z-index: 9999;
+        }
+
+        .bg {
+            position: fixed; inset: 0; z-index: -2;
+            background:
+                radial-gradient(ellipse at 80% 90%, rgba(191,0,255,0.16) 0%, transparent 55%),
+                radial-gradient(ellipse at 20% 10%, rgba(0,245,255,0.12) 0%, transparent 55%);
+        }
+
+        .grid-bg {
+            position: fixed; inset: 0; z-index: -1;
+            background-image:
+                linear-gradient(rgba(191,0,255,0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(191,0,255,0.04) 1px, transparent 1px);
+            background-size: 55px 55px;
+            transform: perspective(600px) rotateX(55deg);
+            transform-origin: top;
+            animation: gridMove 25s linear infinite;
+        }
+        @keyframes gridMove { 0% { background-position: 0 0; } 100% { background-position: 0 55px; } }
+
+        .stars { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
+        .star { position: absolute; width: 2px; height: 2px; background: #fff; border-radius: 50%; animation: twinkle 3s infinite; }
+        @keyframes twinkle { 0%, 100% { opacity: 0.2; } 50% { opacity: 1; } }
+
+        /* ── NAV ─────────────────────────────────── */
+        nav {
+            position: fixed; top: 0; left: 0; width: 100%;
+            z-index: 1000;
+            backdrop-filter: blur(16px);
+            background: rgba(5,5,8,0.92);
+            border-bottom: 1px solid rgba(0,245,255,0.15);
+            overflow: visible;
+        }
+        .nav-inner {
+            display: flex; align-items: center;
+            justify-content: space-between;
+            padding: 0.3rem 2.5rem; gap: 1rem;
+            height: 62px;
+        }
+        .nav-logo { position: relative; }
+        .nav-logo a { display: flex; align-items: center; }
+        .nav-logo img {
+            height: 110px; position: relative; top: 12px;
+            filter: drop-shadow(0 0 8px var(--cyan));
+            transition: filter 0.3s, transform 0.3s;
+        }
+        .nav-logo img:hover {
+            filter: drop-shadow(0 0 18px var(--cyan)) drop-shadow(0 0 35px var(--magenta));
+            transform: scale(1.06);
+        }
+        .nav-links { display: flex; gap: 0.3rem; list-style: none; align-items: center; }
+        .nav-links a {
+            font-family: 'Orbitron', sans-serif; font-size: 0.72rem; font-weight: 600;
+            color: #fff; text-decoration: none; padding: 0.45rem 0.85rem;
+            position: relative; transition: color 0.3s;
+            letter-spacing: 0.04em; white-space: nowrap;
+        }
+        .nav-links a::after {
+            content: ''; position: absolute; bottom: 0; left: 0;
+            width: 100%; height: 2px;
+            background: linear-gradient(90deg, var(--cyan), var(--magenta));
+            transform: scaleX(0); transition: transform 0.3s;
+        }
+        .nav-links a:hover { color: var(--cyan); }
+        .nav-links a:hover::after { transform: scaleX(1); }
+        .nav-toggle {
+            display: none; flex-direction: column; gap: 5px;
+            cursor: pointer; padding: 6px; background: none; border: none;
+        }
+        .nav-toggle span {
+            display: block; width: 26px; height: 2px;
+            background: var(--cyan); border-radius: 2px;
+            transition: all 0.3s; box-shadow: 0 0 6px var(--cyan);
+        }
+        .nav-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .nav-toggle.open span:nth-child(2) { opacity: 0; }
+        .nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+        .nav-dropdown {
+            display: none; flex-direction: column;
+            background: rgba(5,5,8,0.98);
+            border-top: 1px solid rgba(0,245,255,0.1);
+            padding: 0.5rem 0 0.8rem;
+        }
+        .nav-dropdown.open { display: flex; }
+        .nav-dropdown li { list-style: none; }
+        .nav-dropdown a {
+            font-family: 'Orbitron', sans-serif; font-size: 0.72rem; font-weight: 600;
+            color: #fff; text-decoration: none; padding: 0.75rem 2rem;
+            display: block; letter-spacing: 0.05em;
+            border-left: 2px solid transparent;
+            transition: color 0.2s, border-color 0.2s, background 0.2s;
+        }
+        .nav-dropdown a:hover { color: var(--cyan); border-left-color: var(--cyan); background: rgba(0,245,255,0.05); }
+        @media (max-width: 768px) {
+            .nav-inner { padding: 0.3rem 1.2rem; height: 54px; }
+            .nav-logo img { height: 80px; top: 10px; }
+            .nav-links { display: none; }
+            .nav-toggle { display: flex; }
+        }
+
+        /* ── BREADCRUMB ─────────────────────────── */
+        .breadcrumb {
+            padding: 110px 2rem 0;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .breadcrumb a {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.65rem; color: var(--muted);
+            text-decoration: none; letter-spacing: 0.08em;
+            transition: color 0.2s;
+        }
+        .breadcrumb a:hover { color: var(--cyan); }
+        .breadcrumb span {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.65rem; color: var(--magenta); margin: 0 0.5rem;
+        }
+
+        /* ── PAGE ───────────────────────────────── */
+        .page { padding: 2rem 2rem 6rem; max-width: 1200px; margin: 0 auto; }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 900;
+            text-align: center; margin-bottom: 0.4rem;
+            background: linear-gradient(135deg, var(--magenta), var(--purple));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        .section-sub {
+            font-family: 'Press Start 2P', cursive; font-size: 0.52rem;
+            color: var(--muted); text-align: center; letter-spacing: 0.1em; margin-bottom: 0.8rem;
+        }
+        .divider {
+            width: 80px; height: 3px;
+            background: linear-gradient(90deg, var(--magenta), var(--purple));
+            margin: 0 auto 1.5rem; border-radius: 2px;
+        }
+
+        /* ── DESCRIPCIÓN ───────────────────────── */
+        .desc-box {
+            text-align: center;
+            max-width: 680px;
+            margin: 0 auto 3rem;
+            padding: 1.4rem 2rem;
+            border: 1px solid rgba(191,0,255,0.2);
+            background: rgba(15,15,25,0.7);
+            position: relative;
+        }
+        .desc-box::before {
+            content: '';
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 2px;
+            background: linear-gradient(90deg, var(--magenta), var(--purple));
+        }
+        .desc-box p {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.05rem; color: var(--muted); line-height: 1.7;
+        }
+        .desc-box p strong { color: var(--cyan); }
+
+        /* ── GALERÍA MASONRY ────────────────────── */
+        .gallery {
+            columns: 3 280px;
+            column-gap: 1rem;
+        }
+
+        .gallery-item {
+            break-inside: avoid;
+            margin-bottom: 1rem;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(191,0,255,0.18);
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(30px) scale(0.97);
+            transition: opacity 0.6s ease, transform 0.6s ease, border-color 0.3s, box-shadow 0.3s;
+        }
+        .gallery-item.visible {
+            opacity: 1; transform: translateY(0) scale(1);
+        }
+        .gallery-item:hover {
+            border-color: rgba(191,0,255,0.6);
+            box-shadow: 0 0 25px rgba(191,0,255,0.2), 0 0 60px rgba(0,245,255,0.08);
+        }
+        .gallery-item img {
+            width: 100%; display: block;
+            transition: transform 0.4s ease;
+        }
+        .gallery-item:hover img { transform: scale(1.04); }
+
+        /* overlay en hover */
+        .gallery-item .img-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(to top, rgba(10,5,20,0.85) 0%, transparent 55%);
+            opacity: 0; transition: opacity 0.3s;
+            display: flex; align-items: flex-end; padding: 1rem;
+        }
+        .gallery-item:hover .img-overlay { opacity: 1; }
+        .img-overlay span {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.42rem; color: var(--cyan);
+            letter-spacing: 0.08em;
+        }
+
+        /* ── LIGHTBOX ────────────────────────────── */
+        .lightbox {
+            position: fixed; inset: 0; z-index: 10000;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(0,0,0,0.9);
+            backdrop-filter: blur(8px);
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        .lightbox.open { opacity: 1; pointer-events: all; }
+        .lightbox img {
+            max-width: 90vw; max-height: 88vh;
+            border: 1px solid rgba(191,0,255,0.4);
+            box-shadow: 0 0 60px rgba(191,0,255,0.3), 0 0 120px rgba(0,245,255,0.1);
+            transform: scale(0.9);
+            transition: transform 0.35s cubic-bezier(0.22,1,0.36,1);
+        }
+        .lightbox.open img { transform: scale(1); }
+        .lb-close {
+            position: absolute; top: 1.2rem; right: 1.5rem;
+            background: rgba(191,0,255,0.15); border: 1px solid rgba(191,0,255,0.4);
+            color: var(--magenta); font-size: 1.3rem; width: 38px; height: 38px;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; border-radius: 4px;
+            transition: background 0.2s;
+        }
+        .lb-close:hover { background: rgba(191,0,255,0.3); }
+        .lb-nav {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            background: rgba(10,5,20,0.7); border: 1px solid rgba(0,245,255,0.25);
+            color: var(--cyan); font-size: 1.4rem; width: 44px; height: 44px;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; border-radius: 4px;
+            transition: background 0.2s, border-color 0.2s;
+        }
+        .lb-nav:hover { background: rgba(0,245,255,0.1); border-color: var(--cyan); }
+        .lb-prev { left: 1rem; }
+        .lb-next { right: 1rem; }
+
+        /* ── PARTÍCULAS ─────────────────────────── */
+        #particle-canvas {
+            position: fixed; inset: 0;
+            pointer-events: none;
+            z-index: 9998;
+        }
+
+        /* FOOTER */
+        footer {
+            background: var(--darker); padding: 2rem;
+            text-align: center; border-top: 1px solid rgba(0,245,255,0.15);
+        }
+        .footer-logo { height: 80px; margin-bottom: 1rem; filter: drop-shadow(0 0 8px var(--cyan)); }
+        .footer-text { font-family: 'Press Start 2P', cursive; font-size: 0.48rem; color: var(--muted); line-height: 2.2; }
+        .footer-text span { color: var(--magenta); }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--darker); }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(var(--cyan), var(--magenta)); border-radius: 4px; }
+        ::selection { background: var(--magenta); color: var(--dark); }
+
+        @media (max-width: 768px) {
+            .breadcrumb { padding-top: 80px; }
+            .gallery { columns: 2 150px; }
+        }
+        @media (max-width: 480px) {
+            .gallery { columns: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg"></div>
+    <div class="grid-bg"></div>
+    <div class="stars" id="stars"></div>
+    <canvas id="particle-canvas"></canvas>
+
+    <nav>
+        <div class="nav-inner">
+            <div class="nav-logo">
+                <a href="index.html"><img src="firma-ciber.png" alt="Ciber Planet Logo"></a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="servicios.html">Servicios</a></li>
+                <li><a href="trabajos.html" class="active">Trabajos</a></li>
+                <li><a href="contacto.html">Contacto</a></li>
+                <li><a href="contacto.html#ubicacion">Ubicación</a></li>
+            </ul>
+            <button class="nav-toggle" id="navToggle" aria-label="Menú">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+        <ul class="nav-dropdown" id="navDropdown">
+            <li><a href="servicios.html">Servicios</a></li>
+            <li><a href="trabajos.html" class="active">Trabajos</a></li>
+            <li><a href="contacto.html">Contacto</a></li>
+            <li><a href="contacto.html#ubicacion">Ubicación</a></li>
+        </ul>
+    </nav>
+
+    <!-- BREADCRUMB -->
+    <div class="breadcrumb">
+        <a href="trabajos.html">← Trabajos</a>
+        <span>/</span>
+        <a href="#">Logos & Branding</a>
+    </div>
+
+    <div class="page">
+        <h2 class="section-title">LOGOS & BRANDING</h2>
+        <p class="section-sub">// NUESTRA GALERÍA DE DISEÑOS //</p>
+        <div class="divider"></div>
+
+        <div class="desc-box">
+            <p>Estos son algunos de los trabajos de <strong>diseño gráfico y branding</strong> que hemos realizado para clientes locales y negocios de la región. Cada diseño es único, creado a medida para reflejar la identidad de cada marca. <strong>¡Haz click en cualquier imagen para verla completa!</strong></p>
+        </div>
+
+        <div class="gallery" id="gallery">
+            <div class="gallery-item" data-index="0">
+                <img src="diseños-1.jpeg" alt="Diseño 1 - Ciber Planet">
+                <div class="img-overlay"><span>// VER DISEÑO //</span></div>
+            </div>
+            <div class="gallery-item" data-index="1">
+                <img src="diseños-2.jpeg" alt="Diseño 2 - Ciber Planet">
+                <div class="img-overlay"><span>// VER DISEÑO //</span></div>
+            </div>
+            <div class="gallery-item" data-index="2">
+                <img src="diseños-3.jpeg" alt="Diseño 3 - Ciber Planet">
+                <div class="img-overlay"><span>// VER DISEÑO //</span></div>
+            </div>
+            <div class="gallery-item" data-index="3">
+                <img src="diseños-4.jpeg" alt="Diseño 4 - Ciber Planet">
+                <div class="img-overlay"><span>// VER DISEÑO //</span></div>
+            </div>
+            <div class="gallery-item" data-index="4">
+                <img src="diseños-5.jpeg" alt="Diseño 5 - Ciber Planet">
+                <div class="img-overlay"><span>// VER DISEÑO //</span></div>
+            </div>
+            <div class="gallery-item" data-index="5">
+                <img src="diseños-6.jpeg" alt="Diseño 6 - Ciber Planet">
+                <div class="img-overlay"><span>// VER DISEÑO //</span></div>
+            </div>
+            <div class="gallery-item" data-index="6">
+                <img src="diseños-7.jpeg" alt="Diseño 7 - Ciber Planet">
+                <div class="img-overlay"><span>// VER DISEÑO //</span></div>
+            </div>
+            <div class="gallery-item" data-index="7">
+                <img src="diseños-8.jpeg" alt="Diseño 8 - Ciber Planet">
+                <div class="img-overlay"><span>// VER DISEÑO //</span></div>
+            </div>
+            <div class="gallery-item" data-index="8">
+                <img src="diseños-9.jpeg" alt="Diseño 9 - Ciber Planet">
+                <div class="img-overlay"><span>// VER DISEÑO //</span></div>
+            </div>
+            <div class="gallery-item" data-index="9">
+                <img src="diseños-10.jpeg" alt="Diseño 10 - Ciber Planet">
+                <div class="img-overlay"><span>// VER DISEÑO //</span></div>
+            </div>
+            <div class="gallery-item" data-index="10">
+                <img src="diseños-11.jpeg" alt="Diseño 11 - Ciber Planet">
+                <div class="img-overlay"><span>// VER DISEÑO //</span></div>
+            </div>
+            <div class="gallery-item" data-index="11">
+                <img src="diseños-12.jpeg" alt="Diseño 12 - Ciber Planet">
+                <div class="img-overlay"><span>// VER DISEÑO //</span></div>
+            </div>
+            <div class="gallery-item" data-index="12">
+                <img src="diseños-13.jpeg" alt="Diseño 13 - Ciber Planet">
+                <div class="img-overlay"><span>// VER DISEÑO //</span></div>
+            </div>
+            <div class="gallery-item" data-index="13">
+                <img src="diseños-14.jpeg" alt="Diseño 14 - Ciber Planet">
+                <div class="img-overlay"><span>// VER DISEÑO //</span></div>
+            </div>
+            <div class="gallery-item" data-index="14">
+                <img src="diseños-15.jpeg" alt="Diseño 15 - Ciber Planet">
+                <div class="img-overlay"><span>// VER DISEÑO //</span></div>
+            </div>
+            <div class="gallery-item" data-index="14">
+                <img src="diseños-16.jpg" alt="Diseño 15 - Ciber Planet">
+                <div class="img-overlay"><span>// VER DISEÑO //</span></div>
+            </div>
+            <div class="gallery-item" data-index="14">
+                <img src="diseños-17.jpg" alt="Diseño 15 - Ciber Planet">
+                <div class="img-overlay"><span>// VER DISEÑO //</span></div>
+            </div>
+            <div class="gallery-item" data-index="14">
+                <img src="diseños-18.jpg" alt="Diseño 15 - Ciber Planet">
+                <div class="img-overlay"><span>// VER DISEÑO //</span></div>
+            </div>
+            <div class="gallery-item" data-index="14">
+                <img src="diseños-19.jpg" alt="Diseño 15 - Ciber Planet">
+                <div class="img-overlay"><span>// VER DISEÑO //</span></div>
+            </div>
+            <div class="gallery-item" data-index="14">
+                <img src="diseños-20.jfif" alt="Diseño 15 - Ciber Planet">
+                <div class="img-overlay"><span>// VER DISEÑO //</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- LIGHTBOX -->
+    <div class="lightbox" id="lightbox">
+        <button class="lb-close" id="lbClose">✕</button>
+        <button class="lb-nav lb-prev" id="lbPrev">‹</button>
+        <img src="" alt="" id="lbImg">
+        <button class="lb-nav lb-next" id="lbNext">›</button>
+    </div>
+
+    <footer>
+        <img src="firma-ciber.png" alt="Ciber Planet" class="footer-logo">
+        <p class="footer-text">© 2024 <span>CIBER PLANET</span> — TODOS LOS DERECHOS RESERVADOS</p>
+    </footer>
+
+    <script>
+        // ── ESTRELLAS ────────────────────────────────
+        const sc = document.getElementById('stars');
+        for (let i = 0; i < 80; i++) {
+            const s = document.createElement('div');
+            s.className = 'star';
+            s.style.left = Math.random() * 100 + '%';
+            s.style.top  = Math.random() * 100 + '%';
+            s.style.animationDelay    = Math.random() * 3 + 's';
+            s.style.animationDuration = (Math.random() * 2 + 2) + 's';
+            sc.appendChild(s);
+        }
+
+        // ── REVEAL ON SCROLL ─────────────────────────
+        const obs = new IntersectionObserver(entries => {
+            entries.forEach((e, i) => {
+                if (e.isIntersecting) {
+                    setTimeout(() => e.target.classList.add('visible'), i * 80);
+                    obs.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.08 });
+        document.querySelectorAll('.gallery-item').forEach(el => obs.observe(el));
+
+        // ── PARTÍCULAS EN CANVAS ──────────────────────
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        const particles = [];
+        const COLORS = ['#00f5ff','#ff00ff','#bf00ff','#39ff14','#ffffff','#ffcc00'];
+
+        class Particle {
+            constructor(x, y) {
+                this.x = x; this.y = y;
+                this.vx = (Math.random() - 0.5) * 8;
+                this.vy = (Math.random() - 0.5) * 8 - 3;
+                this.alpha = 1;
+                this.radius = Math.random() * 5 + 2;
+                this.color = COLORS[Math.floor(Math.random() * COLORS.length)];
+                this.gravity = 0.18;
+                this.shape = Math.random() > 0.5 ? 'circle' : 'square';
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.vy += this.gravity;
+                this.alpha -= 0.018;
+                this.vx *= 0.98;
+            }
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = Math.max(0, this.alpha);
+                ctx.fillStyle = this.color;
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = this.color;
+                if (this.shape === 'circle') {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                    ctx.fill();
+                } else {
+                    ctx.fillRect(this.x - this.radius, this.y - this.radius, this.radius * 2, this.radius * 2);
+                }
+                ctx.restore();
+            }
+        }
+
+        function burst(x, y, count = 60) {
+            for (let i = 0; i < count; i++) {
+                particles.push(new Particle(x, y));
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = particles.length - 1; i >= 0; i--) {
+                particles[i].update();
+                particles[i].draw();
+                if (particles[i].alpha <= 0) particles.splice(i, 1);
+            }
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+
+        // ── LIGHTBOX ──────────────────────────────────
+        const lightbox = document.getElementById('lightbox');
+        const lbImg    = document.getElementById('lbImg');
+        const lbClose  = document.getElementById('lbClose');
+        const lbPrev   = document.getElementById('lbPrev');
+        const lbNext   = document.getElementById('lbNext');
+        const items    = document.querySelectorAll('.gallery-item');
+        let current    = 0;
+
+        function getSrc(index) {
+            return items[index].querySelector('img').src;
+        }
+
+        function openLightbox(index) {
+            current = index;
+            lbImg.src = getSrc(current);
+            lightbox.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            lightbox.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        function showNext() {
+            current = (current + 1) % items.length;
+            lbImg.src = getSrc(current);
+        }
+
+        function showPrev() {
+            current = (current - 1 + items.length) % items.length;
+            lbImg.src = getSrc(current);
+        }
+
+        // Click en cada tarjeta → burst + lightbox
+        items.forEach((item, i) => {
+            item.addEventListener('click', (e) => {
+                const rect = item.getBoundingClientRect();
+                const cx = rect.left + rect.width / 2;
+                const cy = rect.top + rect.height / 2;
+                burst(cx, cy, 70);
+                openLightbox(i);
+            });
+        });
+
+        lbClose.addEventListener('click', closeLightbox);
+        lbNext.addEventListener('click', (e) => { e.stopPropagation(); showNext(); });
+        lbPrev.addEventListener('click', (e) => { e.stopPropagation(); showPrev(); });
+        lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+
+        document.addEventListener('keydown', (e) => {
+            if (!lightbox.classList.contains('open')) return;
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowRight') showNext();
+            if (e.key === 'ArrowLeft') showPrev();
+        });
+
+        // ── NAV HAMBURGER ─────────────────────────────
+        (function(){
+            var t = document.getElementById('navToggle');
+            var d = document.getElementById('navDropdown');
+            if(!t||!d) return;
+            t.addEventListener('click', function(){
+                t.classList.toggle('open');
+                d.classList.toggle('open');
+            });
+            d.querySelectorAll('a').forEach(function(a){
+                a.addEventListener('click', function(){
+                    t.classList.remove('open');
+                    d.classList.remove('open');
+                });
+            });
+        })();
+    </script>
+</body>
+</html>

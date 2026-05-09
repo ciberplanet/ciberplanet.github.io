@@ -197,12 +197,11 @@
             border: 1px solid var(--border-c);
             padding: 2.2rem 1.8rem;
             text-align: center;
-            transition: all 0.35s;
             position: relative;
             overflow: hidden;
-            opacity: 0;
-            transform: translateY(40px);
-            transition: opacity 0.7s ease, transform 0.7s ease, border-color 0.35s, box-shadow 0.35s;
+            opacity: 1;
+            transform: translateY(0);
+            transition: border-color 0.35s, box-shadow 0.35s, transform 0.35s;
         }
         .service-card.active {
             opacity: 1; transform: translateY(0);
@@ -232,6 +231,132 @@
             color: var(--cyan); margin-bottom: 0.8rem;
         }
         .service-card p { color: var(--muted); font-size: 1rem; line-height: 1.6; }
+
+        /* ── HOLOGRAMA ─────────────────────────────── */
+        .holo-overlay {
+            position: fixed; inset: 0; z-index: 10000;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(4px);
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        .holo-overlay.show { opacity: 1; pointer-events: all; }
+
+        .holo-panel {
+            position: relative;
+            width: min(520px, 90vw);
+            background: rgba(0,20,10,0.92);
+            border: 1.5px solid #00ff88;
+            box-shadow:
+                0 0 30px rgba(0,255,136,0.35),
+                0 0 80px rgba(0,255,136,0.15),
+                inset 0 0 40px rgba(0,255,136,0.06);
+            padding: 2.5rem 2rem 2rem;
+            clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
+            transform: scale(0.88) translateY(20px);
+            transition: transform 0.35s cubic-bezier(0.22,1,0.36,1);
+            overflow: hidden;
+        }
+        .holo-overlay.show .holo-panel {
+            transform: scale(1) translateY(0);
+        }
+
+        /* scanlines */
+        .holo-panel::before {
+            content: '';
+            position: absolute; inset: 0; pointer-events: none;
+            background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,255,136,0.04) 3px, rgba(0,255,136,0.04) 4px);
+            animation: scanMove 4s linear infinite;
+            z-index: 0;
+        }
+        /* sweep line */
+        .holo-panel::after {
+            content: '';
+            position: absolute; left: 0; top: -100%;
+            width: 100%; height: 60%;
+            background: linear-gradient(to bottom, transparent, rgba(0,255,136,0.07), transparent);
+            animation: sweep 3s linear infinite;
+            z-index: 0;
+        }
+        @keyframes scanMove { to { background-position: 0 4px; } }
+        @keyframes sweep { to { top: 200%; } }
+
+        .holo-corner {
+            position: absolute; width: 18px; height: 18px;
+            border-color: #00ff88; border-style: solid;
+            opacity: 0.7;
+        }
+        .holo-corner.tl { top: 4px; left: 4px; border-width: 2px 0 0 2px; }
+        .holo-corner.tr { top: 4px; right: 4px; border-width: 2px 2px 0 0; }
+        .holo-corner.bl { bottom: 4px; left: 4px; border-width: 0 0 2px 2px; }
+        .holo-corner.br { bottom: 4px; right: 4px; border-width: 0 2px 2px 0; }
+
+        .holo-close {
+            position: absolute; top: 0.6rem; right: 0.7rem;
+            background: rgba(0,255,136,0.1);
+            border: 1px solid rgba(0,255,136,0.4);
+            cursor: pointer;
+            font-size: 1.1rem;
+            color: #00ff88;
+            width: 32px; height: 32px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 4px;
+            z-index: 2;
+            transition: background 0.2s, color 0.2s;
+        }
+        .holo-close:hover {
+            background: rgba(0,255,136,0.25);
+            color: #fff;
+        }
+
+        .holo-header {
+            position: relative; z-index: 1;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.65rem; color: #00ff88; letter-spacing: 0.18em;
+            margin-bottom: 0.3rem; opacity: 0.6;
+        }
+        .holo-title {
+            position: relative; z-index: 1;
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(1rem, 3vw, 1.4rem); font-weight: 900;
+            color: #00ff88;
+            text-shadow: 0 0 18px rgba(0,255,136,0.7), 0 0 40px rgba(0,255,136,0.3);
+            margin-bottom: 1.4rem;
+            display: flex; align-items: center; gap: 0.6rem;
+        }
+        .holo-list {
+            position: relative; z-index: 1;
+            list-style: none; padding: 0; margin: 0;
+            display: flex; flex-direction: column; gap: 0.55rem;
+        }
+        .holo-list li {
+            display: flex; align-items: flex-start; gap: 0.7rem;
+            color: #aaffdd; font-family: 'Rajdhani', sans-serif;
+            font-size: 1.02rem; line-height: 1.4;
+            border-bottom: 1px solid rgba(0,255,136,0.08);
+            padding-bottom: 0.5rem;
+            opacity: 0; transform: translateX(-10px);
+            transition: opacity 0.3s, transform 0.3s;
+        }
+        .holo-overlay.show .holo-list li { opacity: 1; transform: translateX(0); }
+        .holo-list li::before {
+            content: '▶';
+            color: #00ff88; font-size: 0.55rem; margin-top: 0.35rem; flex-shrink: 0;
+            text-shadow: 0 0 8px #00ff88;
+        }
+        .holo-price {
+            position: relative; z-index: 1;
+            margin-top: 1.2rem;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.48rem; color: rgba(0,255,136,0.45);
+            letter-spacing: 0.08em;
+        }
+        /* flicker */
+        @keyframes flicker {
+            0%,100%{opacity:1} 92%{opacity:1} 93%{opacity:.6} 94%{opacity:1} 97%{opacity:.8} 98%{opacity:1}
+        }
+        .holo-panel { animation: flicker 5s infinite; }
 
         /* FOOTER */
         footer {
@@ -307,8 +432,8 @@
             </div>
             <div class="service-card">
                 <span class="service-icon">🖨️</span>
-                <h3>Impresiones & Copias</h3>
-                <p>Impresión a color y B/N, copias, escaneos y encuadernados. Todo lo que necesitas.</p>
+                <h3>Impresiones, Copias, Tramites</h3>
+                <p>Impresión a color e imrpesiones bln, <b class="blood-sevicios">consulta aqui los servicios que ofrecemos</b></p>
             </div>
             <div class="service-card">
                 <span class="service-icon">📱</span>
@@ -317,13 +442,13 @@
             </div>
             <div class="service-card">
                 <span class="service-icon">💾</span>
-                <h3>Papelería Digital</h3>
+                <h3>Papelería</h3>
                 <p>Trabajos escolares, currículums, formatos oficiales. Te ayudamos con tus documentos.</p>
             </div>
             <div class="service-card">
                 <span class="service-icon">📲</span>
                 <h3>Reparación de Celulares</h3>
-                <p>Pantallas, baterías, puertos de carga y más. Tu celular como nuevo.</p>
+                <p>Pantallas, baterías, puertos de carga y más. Tu celular como nuevo en minutos.</p>
             </div>
             <div class="service-card">
                 <span class="service-icon">💻</span>
@@ -338,13 +463,196 @@
         </div>
     </div>
 
+    <!-- HOLOGRAMA OVERLAY -->
+    <div class="holo-overlay" id="holoOverlay">
+        <div class="holo-panel" id="holoPanel">
+            <div class="holo-corner tl"></div>
+            <div class="holo-corner tr"></div>
+            <div class="holo-corner bl"></div>
+            <div class="holo-corner br"></div>
+            <button class="holo-close" id="holoClose">✕</button>
+            <p class="holo-header">// CIBER PLANET · MÓDULO DE SERVICIOS //</p>
+            <div class="holo-title" id="holoTitleText"></div>
+            <ul class="holo-list" id="holoList"></ul>
+            <p class="holo-price" id="holoFooter"></p>
+        </div>
+    </div>
+
     <footer>
         <img src="firma-ciber.png" alt="Ciber Planet" class="footer-logo">
         <p class="footer-text">© 2024 <span>CIBER PLANET</span> — TODOS LOS DERECHOS RESERVADOS</p>
     </footer>
 
     <script>
-        const sc = document.getElementById('stars');
+        // ── DATOS DEL HOLOGRAMA ──────────────────────
+        const holoData = {
+            'Gaming Zone': {
+                icon: '🎮',
+                items: [
+                    'PCs gaming de alto rendimiento (RTX 4060+)',
+                    'Headsets, ratones y teclados profesionales',
+                    'Títulos AAA disponibles: Fortnite, Warzone, GTA V, FC 25 y más',
+                    'Sillas ergonómicas gaming',
+                    'Torneos internos y clasificatorias',
+                    'Tarifas por hora o sesión completa'
+                ],
+                footer: 'TARIFA: DESDE $10 MXN / HR · SESIÓN DE 3HRS: $25 MXN'
+            },
+            'Internet de Alta Velocidad': {
+                icon: '🌐',
+                items: [
+                    'Fibra óptica simétrica de alta velocidad',
+                    'Streaming en 4K sin interrupciones',
+                    'Descarga de archivos pesados',
+                    'Videoconferencias y trabajo remoto',
+                    'Wi-Fi y conexión por cable disponibles',
+                    'Sin límite de datos'
+                ],
+                footer: 'CONEXIÓN DISPONIBLE EN TODAS LAS ESTACIONES'
+            },
+            'Impresiones, Copias, Tramites': {
+                icon: '🖨️',
+                items: [
+                    'Impresión a color (tamaños carta, oficio, A4)',
+                    'Impresión en blanco y negro económica',
+                    'Fotocopias simples y múltiples',
+                    'Laminado y engargolado',
+                    'Trámites CURP, RFC, actas en línea',
+                    'Envío de documentos por correo electrónico'
+                ],
+                footer: 'COPIAS BN: $1 MXN · COLOR: DESDE $3 MXN'
+            },
+            'Recargas & Pagos': {
+                icon: '📱',
+                items: [
+                    'Recargas Telcel, Movistar, AT&T, Unefon, Bait',
+                    'Paquetes de datos y llamadas',
+                    'Pago de servicios: CFE, agua, predial',
+                    'Transferencias y pagos en línea',
+                    'Sin comisiones extra',
+                    'Rápido y seguro'
+                ],
+                footer: 'RECARGAS DESDE $20 MXN · DISPONIBLE TODO EL DÍA'
+            },
+            'Papelería': {
+                icon: '💾',
+                items: [
+                    'Trabajos escolares y universitarios',
+                    'Currículums y cartas de presentación',
+                    'Formatos oficiales y solicitudes',
+                    'Impresión de tesis y reportes',
+                    'Carteles y trípticos',
+                    'Asesoría en formato APA / MLA'
+                ],
+                footer: 'CONSULTANOS · PRECIOS SEGÚN EL TRABAJO'
+            },
+            'Reparación de Celulares': {
+                icon: '📲',
+                items: [
+                    'Cambio de pantallas (iPhone, Samsung, Xiaomi, etc.)',
+                    'Reemplazo de baterías',
+                    'Reparación de puertos de carga',
+                    'Botones y altavoces dañados',
+                    'Diagnóstico gratuito',
+                    'Garantía en reparaciones'
+                ],
+                footer: 'DIAGNÓSTICO GRATIS · GARANTÍA INCLUIDA'
+            },
+            'Reparación de Computadoras': {
+                icon: '💻',
+                items: [
+                    'Formateo e instalación de Windows / Linux',
+                    'Limpieza física y de virus',
+                    'Actualización de RAM, SSD y componentes',
+                    'Recuperación de datos',
+                    'Instalación de programas y drivers',
+                    'Mantenimiento preventivo y correctivo'
+                ],
+                footer: 'FORMATEO BÁSICO DESDE $150 MXN'
+            },
+            'Diseño Gráfico & Web': {
+                icon: '🎨',
+                items: [
+                    'Logos y branding profesional',
+                    'Tarjetas de presentación digitales e impresas',
+                    'Páginas y portadas para Facebook / Instagram',
+                    'Carteles, flyers y material publicitario',
+                    'Diseño y desarrollo de sitios web',
+                    'Edición de fotos y videos'
+                ],
+                footer: 'COTIZACIÓN SIN COSTO · PREGUNTA POR PAQUETES'
+            }
+        };
+
+        // ── LÓGICA DEL HOLOGRAMA ─────────────────────
+        const overlay = document.getElementById('holoOverlay');
+        const holoTitleText = document.getElementById('holoTitleText');
+        const holoList = document.getElementById('holoList');
+        const holoFooter = document.getElementById('holoFooter');
+        const holoClose = document.getElementById('holoClose');
+
+        let closeTimer = null;
+        let currentTitle = null;
+
+        function openHolo(title) {
+            // Si ya está mostrando este mismo servicio, no redibujar
+            if (currentTitle === title && overlay.classList.contains('show')) return;
+            currentTitle = title;
+
+            clearTimeout(closeTimer);
+
+            const data = holoData[title];
+            if (!data) return;
+
+            holoTitleText.textContent = data.icon + ' ' + title;
+            holoFooter.textContent = data.footer || '';
+            holoList.innerHTML = '';
+
+            data.items.forEach((item, i) => {
+                const li = document.createElement('li');
+                li.textContent = item;
+                li.style.transitionDelay = (i * 55) + 'ms';
+                holoList.appendChild(li);
+            });
+
+            overlay.classList.add('show');
+        }
+
+        function scheduleClose() {
+            closeTimer = setTimeout(() => {
+                overlay.classList.remove('show');
+                currentTitle = null;
+            }, 200);
+        }
+
+        function cancelClose() {
+            clearTimeout(closeTimer);
+        }
+
+        holoClose.addEventListener('click', () => {
+            overlay.classList.remove('show');
+            currentTitle = null;
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') { overlay.classList.remove('show'); currentTitle = null; }
+        });
+
+        document.querySelectorAll('.service-card').forEach(card => {
+            card.style.cursor = 'pointer';
+            const title = card.querySelector('h3')?.textContent.trim();
+            card.addEventListener('click', () => {
+                if (overlay.classList.contains('show') && currentTitle === title) {
+                    overlay.classList.remove('show');
+                    currentTitle = null;
+                } else {
+                    openHolo(title);
+                }
+            });
+        });
+
+        // Estrellas
+        const starsEl = document.getElementById('stars');
         for (let i = 0; i < 80; i++) {
             const s = document.createElement('div');
             s.className = 'star';
@@ -352,33 +660,24 @@
             s.style.top  = Math.random() * 100 + '%';
             s.style.animationDelay    = Math.random() * 3 + 's';
             s.style.animationDuration = (Math.random() * 2 + 2) + 's';
-            sc.appendChild(s);
+            starsEl.appendChild(s);
         }
 
-        const obs = new IntersectionObserver(entries => {
-            entries.forEach((e, i) => {
-                if (e.isIntersecting) {
-                    setTimeout(() => e.target.classList.add('active'), i * 80);
-                }
-            });
-        }, { threshold: 0.1 });
-        document.querySelectorAll('.service-card').forEach(el => obs.observe(el));
         // Nav hamburger
-        (function(){
-            var t = document.getElementById('navToggle');
-            var d = document.getElementById('navDropdown');
-            if(!t||!d) return;
-            t.addEventListener('click', function(){
-                t.classList.toggle('open');
-                d.classList.toggle('open');
+        var navT = document.getElementById('navToggle');
+        var navD = document.getElementById('navDropdown');
+        if (navT && navD) {
+            navT.addEventListener('click', function() {
+                navT.classList.toggle('open');
+                navD.classList.toggle('open');
             });
-            d.querySelectorAll('a').forEach(function(a){
-                a.addEventListener('click', function(){
-                    t.classList.remove('open');
-                    d.classList.remove('open');
+            navD.querySelectorAll('a').forEach(function(a) {
+                a.addEventListener('click', function() {
+                    navT.classList.remove('open');
+                    navD.classList.remove('open');
                 });
             });
-        })();
+        }
     </script>
 </body>
 </html>
